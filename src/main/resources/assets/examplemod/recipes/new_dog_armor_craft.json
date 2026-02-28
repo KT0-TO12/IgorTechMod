@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "HCT",
+    "   "
+  ],
+  "key": {
+    "H": {
+      "item": "examplemod:new_dog_helmet"
+    },
+    "C": {
+      "item": "examplemod:new_dog_chestplate"
+    },
+    "T": {
+      "item": "examplemod:new_dog_tail"
+    }
+  },
+  "result": {
+    "item": "examplemod:new_dog_armor"
+  }
+}

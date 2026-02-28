@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CHC",
+    "HGH",
+    "CZC"
+  ],
+  "key": {
+    "H": {
+      "type": "forge:ore_dict",
+      "ore": "blockSteel"
+    },
+    "C": {
+      "item": "examplemod:new_armor_plate"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "Z": {
+      "item": "examplemod:new_gas_filter"
+    }
+  },
+  "result": {
+    "item": "examplemod:new_dog_helmet"
+  }
+}

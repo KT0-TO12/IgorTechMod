@@ -1,0 +1,26 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SPS",
+    "LAL",
+    "SPS"
+  ],
+  "key": {
+    "S": {"item":"examplemod:new_armor_plate"},
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "ingotLead"
+    },
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "plateSteel"
+    },
+    "A": {
+      "item": "hbm:ingot_am241"
+    }
+  },
+  "result": {
+    "item": "examplemod:infinite_battery",
+    "count": 1
+  }
+}

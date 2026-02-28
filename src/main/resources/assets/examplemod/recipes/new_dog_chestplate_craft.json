@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HCH",
+    " TK",
+    "HCH"
+  ],
+  "key": {
+    "H": {
+      "item": "examplemod:new_armor_plate"
+    },
+    "C": {
+      "item": "minecraft:iron_ingot"
+    },
+    "K": {
+      "type": "forge:ore_dict",
+      "ore": "ingotSteel"
+    },
+    "T": {
+      "item": "examplemod:infinite_battery"
+    }
+  },
+  "result": {
+    "item": "examplemod:new_dog_chestplate"
+  }
+}

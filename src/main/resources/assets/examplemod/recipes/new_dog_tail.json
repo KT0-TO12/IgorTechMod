@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HC ",
+    "  T",
+    "HC "
+  ],
+  "key": {
+    "H": { "item": "examplemod:new_armor_plate" },
+    "C": { "item": "minecraft:iron_block" },
+    "T": { "type": "forge:ore_dict",
+      "ore": "blockSteel"}
+  },
+  "result": {
+    "item": "examplemod:new_dog_tail",
+    "count": 1
+  }
+}

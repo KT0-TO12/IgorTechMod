@@ -1,0 +1,25 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " I ",
+    "#C#",
+    "#I#"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    "#": {
+      "item": "examplemod:new_armor_plate"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    }
+  },
+  "result": {
+    "item": "examplemod:new_gas_filter",
+    "count": 1
+  }
+}
