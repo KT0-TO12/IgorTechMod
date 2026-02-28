@@ -52,23 +52,23 @@ public class WolfArmorEffects {
             }
             for (Potion p : toRemove) wolf.removePotionEffect(p);
         } else {
-            // Если брони нет — убираем модификаторы характеристик
+
             removeAttributes(wolf);
         }
 
-        // 4. Применяем наследственные эффекты (если есть)
+        //Применяем наследственные эффекты
         applyInheritance(wolf);
     }
 
     private static void applyAttributes(EntityWolf wolf) {
-        // Здоровье x4
+        //Здоровье
         IAttributeInstance maxHealth = wolf.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
         if (maxHealth.getModifier(HEALTH_UUID) == null) {
             maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 4.0D, 4));
             wolf.setHealth(wolf.getMaxHealth());
         }
 
-        // Урон x2.5
+        //Урон
         IAttributeInstance attackDamage = wolf.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         if (attackDamage != null && attackDamage.getModifier(DAMAGE_UUID) == null) {
             attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 3.5D, 4));
