@@ -30,6 +30,7 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ExampleMod.PESPATRON)
 public class ModBlocks {
+    public static Block blast_furnace = new BlockBlastFurnace();
     public static final Block BAKHMUTIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("bakhmutium_ore")
             .setUnlocalizedName("bakhmutium_ore")

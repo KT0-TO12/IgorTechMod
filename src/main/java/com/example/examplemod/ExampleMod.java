@@ -23,6 +23,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+
+import java.awt.*;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
@@ -68,13 +70,15 @@ public class ExampleMod {
             return new ItemStack(DOG_ARMOR);
         }
     };
-    public static Item TITANIUM_INGOT;
+
     //новое
     public static Item bakhmutium_ingot = new Item()
             .setRegistryName("bakhmutium_ingot")
             .setUnlocalizedName("bakhmutium_ingot")
             .setCreativeTab(ExampleMod.MOD_TAB);
     //другое
+    public static Item STEEL_INGOT;
+    public static Item TITANIUM_INGOT;
     public static Item URANIUM_INGOT;
     public static Item GAS_FILTER;
     public static Item ARMOR_PLATE;
@@ -92,6 +96,7 @@ public class ExampleMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(PESPATRON, "blast_furnace"));
         if (event.getSide().isClient()) {
             DiscordManager.start();
         }
@@ -102,6 +107,7 @@ public class ExampleMod {
 
         // ПРЕДМЕТЫ
         INFINITE_BATTERY = new ItemInfiniteBattery();
+        STEEL_INGOT = new ItemBase("steel_ingot");
         URANIUM_INGOT = new ItemBase("uranium_ingot");
         TITANIUM_INGOT = new ItemBase("new_titanium_ingot");
         GAS_FILTER = new ItemBase("new_gas_filter");
@@ -132,13 +138,15 @@ public class ExampleMod {
         ITEM_FURNACE = new net.minecraft.item.ItemBlock(TITANIUM_FURNACE).setRegistryName("new_titanium_furnace");
 
         GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(PESPATRON, "new_statue_tile"));
-        GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
+        //GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
     }
     //init
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ModRecipes.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel",STEEL_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
 //        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
@@ -174,7 +182,7 @@ public class ExampleMod {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         event.getRegistry().register(new ItemBlock(ModBlocks.BAKHMUTIUM_ORE).setRegistryName(ModBlocks.BAKHMUTIUM_ORE.getRegistryName()));
-        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT,URANIUM_INGOT,ITEM_STATUE, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
+        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE,TITANIUM_INGOT,URANIUM_INGOT,STEEL_INGOT, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
     }
 
     @SubscribeEvent
@@ -187,6 +195,7 @@ public class ExampleMod {
         registerModel(ARMOR_PLATE);
         registerModel(TITANIUM_INGOT);
         registerModel(URANIUM_INGOT);
+        registerModel(STEEL_INGOT);
         registerModel(ITEM_STATUE);
         registerModel(ITEM_STATUE_2);
         registerModel(GAS_FILTER);
