@@ -64,14 +64,14 @@ public class WolfArmorEffects {
         //Здоровье
         IAttributeInstance maxHealth = wolf.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
         if (maxHealth.getModifier(HEALTH_UUID) == null) {
-            maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 4.0D, 4));
+            maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 3.5D, 3));
             wolf.setHealth(wolf.getMaxHealth());
         }
 
         //Урон
         IAttributeInstance attackDamage = wolf.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         if (attackDamage != null && attackDamage.getModifier(DAMAGE_UUID) == null) {
-            attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 3.5D, 4));
+            attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 3.5D, 3));
         }
     }
 

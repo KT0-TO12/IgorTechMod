@@ -19,9 +19,7 @@ public class OreGen implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        // Генерация только в обычном мире (0)
         if (world.provider.getDimension() == 0) {
-            // 20 — количество жил на один чанк, 10 — минимальная высота, 50 — максимальная
             runGenerator(TITANIUM_ORE, world, random, chunkX, chunkZ, 20, 10, 50);
         }
     }
