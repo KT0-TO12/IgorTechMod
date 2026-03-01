@@ -1,0 +1,21 @@
+item.new_dog_armor.name=NCR dog armor
+item.new_dog_helmet.name=NCR dog armor helmet
+item.new_dog_chestplate.name=NCR dog armor chestplate
+item.new_dog_tail.name=NCR dog armor tail part
+item.new_armor_plate.name=armor plate
+item.new_titanium_ingot.name=titanium ingot
+item.new_gas_filter.name=gas filter
+item.infinite_battery.name=mini reactor
+ile.statue_block.name=statue
+tile.uranium_ore.name=uranium ore
+item.uranium_ingot.name=uranium ingor
+item.titanium_ore.name=titanium ore
+tile.new_titanium_furnace=blast furnace(in development)
+tile.new_statue_block_2.name=NOTHING
+tile.new_statue_block.name=NOTHING2
+# Статуэтка
+statue.tooltip.name=§6Personalized statue
+statue.tooltip.hold_shift=§8[hold §7LSHIFT§8 for info]
+statue.tooltip.desc=§figurine with the skin of the main developer of the mod
+# Вкладка в креативе
+itemGroup.tab_pespatron=ITM

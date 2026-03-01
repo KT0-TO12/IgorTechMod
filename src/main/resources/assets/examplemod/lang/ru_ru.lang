@@ -7,10 +7,16 @@ item.new_armor_plate.name=обшивка
 item.new_titanium_ingot.name=слиток титана
 item.new_gas_filter.name=фильтр
 item.infinite_battery.name=мини реактор
-item.new_statue_block.name=статуэтка главного ебателя gradlew
+ile.statue_block.name=статуэтка
+tile.uranium_ore.name=урановая руда
+item.uranium_ingot.name=слиток урана
+item.titanium_ore.name=титановая руда
+tile.new_titanium_furnace=доменная печь(в разработке)
+tile.new_statue_block_2.name=НИЧЕГО
+tile.new_statue_block.name=НИЧЕГО2
 # Статуэтка
 statue.tooltip.name=§6Персональная статуэтка
 statue.tooltip.hold_shift=§8[Зажмите §7LSHIFT§8 для инфо]
-statue.tooltip.desc=§7АААААААААААААААААЯЕБАЛГРАДЛЕВ и forge.
+statue.tooltip.desc=§статуэтка со скином главного разработчика мода
 # Вкладка в креативе
-itemGroup.tab_pespatron=ZOV
+itemGroup.tab_pespatron=ITM

@@ -70,6 +70,7 @@ public class ExampleMod {
         }
     };
     public static Item TITANIUM_INGOT;
+    public static Item URANIUM_INGOT;
     public static Item GAS_FILTER;
     public static Item ARMOR_PLATE;
     public static Item DOG_HELMET;
@@ -96,6 +97,7 @@ public class ExampleMod {
 
         // ПРЕДМЕТЫ
         INFINITE_BATTERY = new ItemInfiniteBattery();
+        URANIUM_INGOT = new ItemBase("uranium_ingot");
         TITANIUM_INGOT = new ItemBase("new_titanium_ingot");
         GAS_FILTER = new ItemBase("new_gas_filter");
         ARMOR_PLATE = new ItemBase("new_armor_plate");
@@ -130,8 +132,10 @@ public class ExampleMod {
     //init
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        ModRecipes.init();
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
-        net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", TITANIUM_INGOT);
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         if (event.getSide() == Side.CLIENT) {
             registerDogLayer();
@@ -164,7 +168,7 @@ public class ExampleMod {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT, ITEM_STATUE, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
+        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT,URANIUM_INGOT,ITEM_STATUE, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
     }
 
     @SubscribeEvent
@@ -175,6 +179,7 @@ public class ExampleMod {
         registerModel(DOG_TAIL);
         registerModel(ARMOR_PLATE);
         registerModel(TITANIUM_INGOT);
+        registerModel(URANIUM_INGOT);
         registerModel(ITEM_STATUE);
         registerModel(ITEM_STATUE_2);
         registerModel(GAS_FILTER);
