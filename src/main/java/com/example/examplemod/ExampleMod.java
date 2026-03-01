@@ -127,7 +127,7 @@ public class ExampleMod {
         GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(PESPATRON, "new_statue_tile"));
         GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
     }
-
+    //init
     @EventHandler
     public void init(FMLInitializationEvent event) {
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
