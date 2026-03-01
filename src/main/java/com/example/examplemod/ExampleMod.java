@@ -1,20 +1,30 @@
 package com.example.examplemod;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import java.util.List;
+import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelPlayer;
@@ -25,31 +35,20 @@ import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = ExampleMod.PESPATRON, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 @Mod.EventBusSubscriber
@@ -70,6 +69,12 @@ public class ExampleMod {
         }
     };
     public static Item TITANIUM_INGOT;
+    //новое
+    public static Item bakhmutium_ingot = new Item()
+            .setRegistryName("bakhmutium_ingot")
+            .setUnlocalizedName("bakhmutium_ingot")
+            .setCreativeTab(ExampleMod.MOD_TAB);
+    //другое
     public static Item URANIUM_INGOT;
     public static Item GAS_FILTER;
     public static Item ARMOR_PLATE;
@@ -168,11 +173,13 @@ public class ExampleMod {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
+        event.getRegistry().register(new ItemBlock(ModBlocks.BAKHMUTIUM_ORE).setRegistryName(ModBlocks.BAKHMUTIUM_ORE.getRegistryName()));
         event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT,URANIUM_INGOT,ITEM_STATUE, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
+        registerModel(bakhmutium_ingot);
         registerModel(DOG_ARMOR);
         registerModel(DOG_HELMET);
         registerModel(DOG_CHESTPLATE);
@@ -198,6 +205,8 @@ public class ExampleMod {
 
     public static void registerModel(Item item) {
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        ModelLoader.setCustomModelResourceLocation(item, 0,
+                new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 
     @SubscribeEvent
