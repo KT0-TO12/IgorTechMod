@@ -11,18 +11,18 @@ import java.util.Random;
 
 public class OreGen implements IWorldGenerator {
 
-    private final WorldGenerator titanium_ore;
+    private final WorldGenerator TITANIUM_ORE;
 
     public OreGen() {
-
-        this.titanium_ore = new WorldGenMinable(ModBlocks.TITANIUM_ORE.getDefaultState(), 4);
+        this.TITANIUM_ORE = new WorldGenMinable(ModBlocks.TITANIUM_ORE.getDefaultState(), 8);
     }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        // Генерируем только в обычном мире
+        // Генерация только в обычном мире (0)
         if (world.provider.getDimension() == 0) {
-            runGenerator(titanium_ore, world, random, chunkX, chunkZ, 10, 5, 30);
+            // 20 — количество жил на один чанк, 10 — минимальная высота, 50 — максимальная
+            runGenerator(TITANIUM_ORE, world, random, chunkX, chunkZ, 20, 10, 50);
         }
     }
 

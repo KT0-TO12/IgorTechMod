@@ -74,11 +74,11 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        // Модель для руды
+
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TITANIUM_ORE), 0,
                 new ModelResourceLocation(TITANIUM_ORE.getRegistryName(), "inventory"));
 
-        // Модель для статуэтки
+
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(STATUE_BLOCK), 0,
                 new ModelResourceLocation(STATUE_BLOCK.getRegistryName(), "inventory"));
     }
@@ -98,7 +98,6 @@ public class ModBlocks {
         @Override public boolean isOpaqueCube(IBlockState s) { return false; }
         @Override public boolean isFullCube(IBlockState s) { return false; }
 
-        // Это важно: говорим игре, что блок рисуется кодом (TESR)
         @Override public EnumBlockRenderType getRenderType(IBlockState s) { return EnumBlockRenderType.ENTITYBLOCK_ANIMATED; }
 
         @Override public AxisAlignedBB getBoundingBox(IBlockState s, IBlockAccess w, BlockPos p) { return BOUNDS; }

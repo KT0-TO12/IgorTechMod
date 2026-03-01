@@ -65,7 +65,9 @@ public class ExampleMod {
 
     public static final CreativeTabs MOD_TAB = new CreativeTabs("tab_pespatron") {
         @Override
-        public ItemStack getTabIconItem() { return new ItemStack(DOG_ARMOR); }
+        public ItemStack getTabIconItem() {
+            return new ItemStack(DOG_ARMOR);
+        }
     };
     public static Item TITANIUM_INGOT;
     public static Item GAS_FILTER;
@@ -81,6 +83,7 @@ public class ExampleMod {
     public static Item ITEM_STATUE_2;
     public static Block TITANIUM_FURNACE;
     public static Item ITEM_FURNACE;
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         if (event.getSide().isClient()) {
@@ -118,7 +121,7 @@ public class ExampleMod {
 
         // ПРЕДМЕТНЫЕ ФОРМЫ БЛОКОВ
         ITEM_STATUE = new net.minecraft.item.ItemBlock(STATUE_BLOCK).setRegistryName("new_statue_block");
-            ITEM_STATUE_2 = new net.minecraft.item.ItemBlock(STATUE_BLOCK_2).setRegistryName("new_statue_block_2");
+        ITEM_STATUE_2 = new net.minecraft.item.ItemBlock(STATUE_BLOCK_2).setRegistryName("new_statue_block_2");
         ITEM_FURNACE = new net.minecraft.item.ItemBlock(TITANIUM_FURNACE).setRegistryName("new_titanium_furnace");
 
         GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(PESPATRON, "new_statue_tile"));
@@ -127,40 +130,41 @@ public class ExampleMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        GameRegistry.registerWorldGenerator(new OreGen(), 0);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", TITANIUM_INGOT);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         if (event.getSide() == Side.CLIENT) {
             registerDogLayer();
         }
     }
+
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        // Этот метод вызывается после того, как все моды загружены.
-        // Здесь можно добавить финальные проверки, если нужно.
         System.out.println("ZOV Mod: Post-Initialization завершена.");
     }
 
     @Mod.EventHandler
     public void stop(FMLServerStoppingEvent event) {
-        // Останавливаем Discord RPC при выходе из игры или закрытии сервера
         if (event.getSide().isClient()) {
             DiscordManager.stop();
             System.out.println("Discord RPC успешно остановлен.");
         }
     }
+
     @SideOnly(Side.CLIENT)
     private void registerDogLayer() {
         RenderWolf render = (RenderWolf) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(EntityWolf.class);
         if (render != null) render.addLayer(new LayerDogArmor(render));
     }
+
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().registerAll(TITANIUM_FURNACE,STATUE_BLOCK_2,STATUE_BLOCK);
+        event.getRegistry().registerAll(TITANIUM_FURNACE, STATUE_BLOCK_2, STATUE_BLOCK);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().registerAll(INFINITE_BATTERY,DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT, ITEM_STATUE,ITEM_STATUE_2, ITEM_FURNACE,GAS_FILTER);
+        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE, TITANIUM_INGOT, ITEM_STATUE, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
     }
 
     @SubscribeEvent
@@ -215,26 +219,22 @@ public class ExampleMod {
             setMaxStackSize(1);
         }
 
-        /**
-         * Логика бесконечной энергии через NBT.
-         * Вызывается каждый тик, пока предмет в инвентаре.
-         */
-        @Override
-        public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-            if (!stack.hasTagCompound()) {
-                stack.setTagCompound(new NBTTagCompound());
-            }
-
-            NBTTagCompound nbt = stack.getTagCompound();
-            // Заполняем все возможные теги энергии, которые могут искать механизмы
-            nbt.setLong("energy", Long.MAX_VALUE);
-            nbt.setLong("max_energy", Long.MAX_VALUE);
-            nbt.setInteger("charge", Integer.MAX_VALUE);
-        }
-
-        /**
-         * Добавление описания (Tooltip)
-         */
+        //        /**
+//         * Логика бесконечной энергии через NBT.
+//         * Вызывается каждый тик, пока предмет в инвентаре.
+//         */
+//        @Override
+//        public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+//            if (!stack.hasTagCompound()) {
+//                stack.setTagCompound(new NBTTagCompound());
+//            }
+//
+//            NBTTagCompound nbt = stack.getTagCompound();
+//            nbt.setLong("energy", Long.MAX_VALUE);
+//            nbt.setLong("max_energy", Long.MAX_VALUE);
+//            nbt.setInteger("charge", Integer.MAX_VALUE);
+//        }
+        //описание
         @Override
         @SideOnly(Side.CLIENT)
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -249,25 +249,25 @@ public class ExampleMod {
             }
         }
 
-        /**
-         * Визуальная полоска заряда (всегда полная)
-         */
-        @Override
-        public boolean showDurabilityBar(ItemStack stack) {
-            return true;
-        }
-
-        @Override
-        public double getDurabilityForDisplay(ItemStack stack) {
-            // 0.0 - полная полоска, 1.0 - пустая.
-            return 0.0;
-        }
+//        /**
+//         * Визуальная полоска заряда (всегда полная)
+//         */
+//        @Override
+//        public boolean showDurabilityBar(ItemStack stack) {
+//            return true;
+//        }
+//
+//        @Override
+//        public double getDurabilityForDisplay(ItemStack stack) {
+//            // 0.0 - полная полоска, 1.0 - пустая.
+//            return 0.0;
+//        }
     }
 }
 
 
 
-// --- КЛАСС ПЕЧИ ---
+//печь
 class BlockTitaniumFurnace extends Block {
     public BlockTitaniumFurnace(String name) {
         super(Material.IRON);
@@ -302,7 +302,7 @@ class BlockTitaniumFurnace extends Block {
     }
 }
 
-// --- КЛАССЫ СТАТУЭТКИ ---
+
 class BlockStatue extends Block {
     protected static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.3D, 0.0D, 0.3D, 0.7D, 0.5D, 0.7D);
     public BlockStatue(String name) {
@@ -331,25 +331,25 @@ class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {
     @Override
     public void render(TileEntityStatue te, double x, double y, double z, float pt, int ds, float a) {
         GlStateManager.pushMatrix();
-        // 1. Позиционирование
+        //Позиционирование
         GlStateManager.translate(x + 0.5, y, z + 0.5);
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F); // Переворачиваем модель ногами вниз
 
-        // 2. Масштаб (в NTM статуэтки маленькие, 0.3F - хороший выбор)
+        //Масштаб
         GlStateManager.scale(0.3F, 0.3F, 0.3F);
         GlStateManager.translate(0.0F, -1.5F, 0.0F); // Центрируем по вертикали
 
-        // 3. Текстура
+        //Текстура
         bindTexture(SKIN);
 
-        // 4. Отрисовка всех частей (включая второй слой одежды)
+        //Отрисовка всех частей
         float s = 0.0625F;
         renderModel(s);
 
         GlStateManager.popMatrix();
     }
 
-    // Вынес отрисовку в отдельный метод, чтобы не дублировать код
+
     private void renderModel(float s) {
         model.bipedHead.render(s);
         model.bipedBody.render(s);
@@ -357,9 +357,9 @@ class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {
         model.bipedLeftArm.render(s);
         model.bipedRightLeg.render(s);
         model.bipedLeftLeg.render(s);
-        model.bipedHeadwear.render(s); // Слой "Шлем"
+        model.bipedHeadwear.render(s);
 
-        // Отрисовка второго слоя (курточки и штанишек), если скин 64x64
+
         model.bipedBodyWear.render(s);
         model.bipedRightArmwear.render(s);
         model.bipedLeftArmwear.render(s);
@@ -376,7 +376,6 @@ class RenderStatueItem extends TileEntityItemStackRenderer {
     @Override
     public void renderByItem(ItemStack stack) {
         GlStateManager.pushMatrix();
-        // В инвентаре координаты немного отличаются для центрирования
         GlStateManager.translate(0.5F, 0.2F, 0.5F);
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(0.35F, 0.35F, 0.35F); // Чуть крупнее для инвентаря
@@ -392,7 +391,7 @@ class RenderStatueItem extends TileEntityItemStackRenderer {
         model.bipedRightLeg.render(s);
         model.bipedLeftLeg.render(s);
         model.bipedHeadwear.render(s);
-        // Второй слой для предмета тоже важен
+
         model.bipedBodyWear.render(s);
         model.bipedRightArmwear.render(s);
         model.bipedLeftArmwear.render(s);
@@ -403,7 +402,6 @@ class RenderStatueItem extends TileEntityItemStackRenderer {
     }
 }
 
-// --- БАЗОВЫЕ КЛАССЫ ---
 class ItemBase extends Item {
     public ItemBase(String name) {
         setUnlocalizedName(name);
@@ -442,17 +440,15 @@ class LayerDogArmor implements LayerRenderer<EntityWolf> {
         return false;
     }
 
-    // --- КЛАССЫ-ПОМОЩНИКИ (Должны быть внутри ExampleMod) ---
 
     public static class Statue extends Block {
         public Statue(String name) {
             super(Material.IRON);
             setUnlocalizedName(name);
             setRegistryName(name);
-            // Если это пустышка (statue_block_2), не добавляем её во вкладку креатива
             if (!name.equals("statue_block_2")) {
                 setCreativeTab(ExampleMod.MOD_TAB);
             }
         }
     }
-} // <--- ЭТО САМАЯ ПОСЛЕДНЯЯ СКОБКА ФАЙЛА. Она закрывает class ExampleMod.
+}
