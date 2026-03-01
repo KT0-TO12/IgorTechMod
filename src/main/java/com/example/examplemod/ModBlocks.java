@@ -30,8 +30,11 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ExampleMod.PESPATRON)
 public class ModBlocks {
-
-    //руда
+    public static final Block URANIUM_ORE = new Block(Material.ROCK)
+            .setRegistryName("titanium_ore")
+            .setUnlocalizedName("titanium_ore")
+            .setHardness(3.0F)
+            .setCreativeTab(ExampleMod.MOD_TAB);
     public static final Block TITANIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("titanium_ore")
             .setUnlocalizedName("titanium_ore")
@@ -43,14 +46,15 @@ public class ModBlocks {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        // Регистрируем оба блока в мире
-        event.getRegistry().registerAll(TITANIUM_ORE, STATUE_BLOCK);
+
+        event.getRegistry().registerAll(TITANIUM_ORE, STATUE_BLOCK,URANIUM_ORE);
     }
 
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
 
         event.getRegistry().register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
+        event.getRegistry().register(new ItemBlock(URANIUM_ORE).setRegistryName(URANIUM_ORE.getRegistryName()));
 
 
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
