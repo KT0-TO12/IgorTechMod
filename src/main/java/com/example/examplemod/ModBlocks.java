@@ -31,17 +31,24 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = ExampleMod.PESPATRON)
 public class ModBlocks {
     public static final Block URANIUM_ORE = new Block(Material.ROCK)
-            .setRegistryName("titanium_ore")
-            .setUnlocalizedName("titanium_ore")
+            .setRegistryName("uranium_ore")
+            .setUnlocalizedName("uranium_ore")
             .setHardness(3.0F)
-            .setCreativeTab(ExampleMod.MOD_TAB);
+            .setResistance(10.0f);
+    static {
+        URANIUM_ORE.setHarvestLevel("pickaxe", 3);
+        URANIUM_ORE.setCreativeTab(ExampleMod.MOD_TAB);
+    }
     public static final Block TITANIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("titanium_ore")
             .setUnlocalizedName("titanium_ore")
             .setHardness(3.0F)
-            .setCreativeTab(ExampleMod.MOD_TAB);
+            .setResistance(10.0f);
+    static {
+        URANIUM_ORE.setHarvestLevel("pickaxe", 2);
+        URANIUM_ORE.setCreativeTab(ExampleMod.MOD_TAB);
+    }
 
-    //статуэтка
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
 
     @SubscribeEvent

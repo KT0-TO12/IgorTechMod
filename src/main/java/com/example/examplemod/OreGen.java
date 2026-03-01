@@ -12,15 +12,18 @@ import java.util.Random;
 public class OreGen implements IWorldGenerator {
 
     private final WorldGenerator TITANIUM_ORE;
+    private final WorldGenerator URANIUM_ORE;
 
     public OreGen() {
         this.TITANIUM_ORE = new WorldGenMinable(ModBlocks.TITANIUM_ORE.getDefaultState(), 8);
+        this.URANIUM_ORE = new WorldGenMinable(ModBlocks.URANIUM_ORE.getDefaultState(), 4);
     }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimension() == 0) {
             runGenerator(TITANIUM_ORE, world, random, chunkX, chunkZ, 20, 10, 50);
+            runGenerator(URANIUM_ORE, world, random, chunkX, chunkZ, 5, 5, 20);
         }
     }
 
