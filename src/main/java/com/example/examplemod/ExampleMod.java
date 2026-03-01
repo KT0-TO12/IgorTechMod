@@ -141,10 +141,10 @@ public class ExampleMod {
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-        if (event.getSide() == Side.CLIENT) {
-            registerDogLayer();
-        }
+//        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+//        if (event.getSide() == Side.CLIENT) {
+//            registerDogLayer();
+//        }
     }
 
     @Mod.EventHandler
@@ -263,9 +263,6 @@ public class ExampleMod {
             }
         }
 
-//        /**
-//         * Визуальная полоска заряда (всегда полная)
-//         */
 //        @Override
 //        public boolean showDurabilityBar(ItemStack stack) {
 //            return true;
@@ -284,36 +281,36 @@ public class ExampleMod {
 //печь
 class BlockTitaniumFurnace extends Block {
     public BlockTitaniumFurnace(String name) {
-        super(Material.IRON);
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(ExampleMod.MOD_TAB);
-        setHardness(3.5F);
+          super(Material.IRON);
+//        setUnlocalizedName(name);
+//        setRegistryName(name);
+//        setCreativeTab(ExampleMod.MOD_TAB);
+//        setHardness(3.5F);
     }
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            player.openGui(ExampleMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
-        }
-        return true;
-    }
-
-    @Override public boolean hasTileEntity(IBlockState s) { return true; }
-    @Override public TileEntity createTileEntity(World w, IBlockState s) { return new TileEntityTitaniumFurnace(); }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileEntityTitaniumFurnace) {
-            TileEntityTitaniumFurnace furnace = (TileEntityTitaniumFurnace) te;
-            for (int i = 0; i < furnace.getSizeInventory(); i++) {
-                ItemStack stack = furnace.getStackInSlot(i);
-                if (!stack.isEmpty()) InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-            }
-        }
-        super.breakBlock(world, pos, state);
-    }
+//    @Override
+//    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+//        if (!world.isRemote) {
+//            player.openGui(ExampleMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+//        }
+//        return true;
+//    }
+//
+//    @Override public boolean hasTileEntity(IBlockState s) { return true; }
+//    @Override public TileEntity createTileEntity(World w, IBlockState s) { return new TileEntityTitaniumFurnace(); }
+//
+//    @Override
+//    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+//        TileEntity te = world.getTileEntity(pos);
+//        if (te instanceof TileEntityTitaniumFurnace) {
+//            TileEntityTitaniumFurnace furnace = (TileEntityTitaniumFurnace) te;
+//            for (int i = 0; i < furnace.getSizeInventory(); i++) {
+//                ItemStack stack = furnace.getStackInSlot(i);
+//                if (!stack.isEmpty()) InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+//            }
+//        }
+//        super.breakBlock(world, pos, state);
+//    }
 }
 
 
