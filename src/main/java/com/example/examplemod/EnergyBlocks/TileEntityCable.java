@@ -1,4 +1,4 @@
-package com.example.examplemod.machines.Cable;
+package com.example.examplemod.EnergyBlocks;
 
 import com.example.examplemod.IFE.IEStorage;
 import com.example.examplemod.main.ExampleMod;
