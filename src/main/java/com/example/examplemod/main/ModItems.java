@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.main;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,7 +18,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.example.examplemod.ExampleMod.*;
+import static com.example.examplemod.main.ExampleMod.*;
 
 @Mod.EventBusSubscriber(modid = "examplemod")
 public class ModItems {
@@ -40,9 +40,9 @@ public class ModItems {
                 }
             }
         };
-        registerItem(registry, DOG_ARMOR, "new_dog_armor");
 
-        INFINITE_BATTERY = registerItem(registry, new Item(), "infinite_battery");
+        registerItem(registry, DOG_ARMOR, "new_dog_armor");
+        INFINITE_BATTERY = registerItem(registry, new Item().setMaxStackSize(1), "infinite_battery");
         STEEL_INGOT = registerItem(registry, new Item(), "steel_ingot");
         URANIUM_INGOT = registerItem(registry, new Item(), "uranium_ingot");
         TITANIUM_INGOT = registerItem(registry, new Item(), "new_titanium_ingot");

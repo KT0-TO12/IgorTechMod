@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.discord;
 
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;

@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.main;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.machines.BlastFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

@@ -2,21 +2,16 @@
   "type": "forge:ore_shaped",
   "pattern": [
     "SPS",
-    "LAL",
+    "SAS",
     "SPS"
   ],
   "key": {
     "S": {"item":"examplemod:new_armor_plate"},
-    "L": {
-      "type": "forge:ore_dict",
-      "ore": "ingotLead"
-    },
     "P": {
-      "type": "forge:ore_dict",
-      "ore": "plateSteel"
+      "item":"examplemod:bakhmutium_ingot"
     },
     "A": {
-      "item": "hbm:ingot_am241"
+      "item":"examplemod:uranium_ingot"
     }
   },
   "result": {

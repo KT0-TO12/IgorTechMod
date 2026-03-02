@@ -1,5 +1,6 @@
-package com.example.examplemod;
+package com.example.examplemod.main;
 
+import com.example.examplemod.machines.BlastFurnace.BlockBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

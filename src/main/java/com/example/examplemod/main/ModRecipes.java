@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.main;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;

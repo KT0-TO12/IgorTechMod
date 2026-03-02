@@ -1,5 +1,6 @@
-package com.example.examplemod;
+package com.example.examplemod.NCRWOLF;
 
+import com.example.examplemod.main.ExampleMod;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;

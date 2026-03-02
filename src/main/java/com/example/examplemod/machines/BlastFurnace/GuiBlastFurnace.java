@@ -1,9 +1,8 @@
-package com.example.examplemod;
+package com.example.examplemod.machines.BlastFurnace;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiBlastFurnace extends GuiContainer {
     private final TileEntityBlastFurnace tileEntity;
@@ -21,7 +20,6 @@ public class GuiBlastFurnace extends GuiContainer {
         this.fontRenderer.drawString("Fuel", 43, 43, 0xBABABA);
         this.fontRenderer.drawString("Input 2", 70, 24, 0xBABABA);
         this.fontRenderer.drawString("Output", 120, 24, 0xBABABA);
-
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
 
         int energy = this.tileEntity.getField(2);
@@ -34,21 +32,25 @@ public class GuiBlastFurnace extends GuiContainer {
         int j = (this.height - this.ySize) / 2;
 
         drawRect(i, j, i + xSize, j + ySize, 0xFF2D2D2D);
-
         drawRect(i + 5, j + 80, i + xSize - 5, j + 82, 0xFF121212);
 
-        drawSlotBack(i + 44, j + 17);  // Slot 0
-        drawSlotBack(i + 44, j + 53);  // Slot 1
-        drawSlotBack(i + 71, j + 35);  // Slot 2
-        drawSlotBack(i + 126, j + 35); // Slot 3
+        drawSlotBack(i + 44, j + 17);
+        drawSlotBack(i + 44, j + 53);
+        drawSlotBack(i + 71, j + 35);
+        drawSlotBack(i + 126, j + 35);
 
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                drawSlotBack(i + 8 + col * 18, j + 84 + row * 18);
+            }
+        }
+        for (int col = 0; col < 9; col++) {
+            drawSlotBack(i + 8 + col * 18, j + 142);
+        }
 
         int energy = this.tileEntity.getField(2);
         int energyBarHeight = (int) (energy * 0.45);
-
-
         drawRect(i + 12, j + 20, i + 20, j + 65, 0xFF121212);
-
         if (energy > 0) {
             drawRect(i + 13, j + 64 - energyBarHeight, i + 19, j + 64, 0xFFFF8C00);
         }

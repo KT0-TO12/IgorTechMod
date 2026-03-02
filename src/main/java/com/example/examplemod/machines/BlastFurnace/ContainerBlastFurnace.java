@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.machines.BlastFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -43,21 +43,11 @@ public class ContainerBlastFurnace extends Container {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icontainerlistener = this.listeners.get(i);
-
-            if (this.cookTime != this.tileEntity.getField(0)) {
-                icontainerlistener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
-            }
-            if (this.totalCookTime != this.tileEntity.getField(1)) {
-                icontainerlistener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
-            }
-            if (this.energy != this.tileEntity.getField(2)) {
-                icontainerlistener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
-            }
+        for (IContainerListener listener : this.listeners) {
+            if (this.cookTime != this.tileEntity.getField(0)) listener.sendWindowProperty(this, 0, this.tileEntity.getField(0));
+            if (this.totalCookTime != this.tileEntity.getField(1)) listener.sendWindowProperty(this, 1, this.tileEntity.getField(1));
+            if (this.energy != this.tileEntity.getField(2)) listener.sendWindowProperty(this, 2, this.tileEntity.getField(2));
         }
-
         this.cookTime = this.tileEntity.getField(0);
         this.totalCookTime = this.tileEntity.getField(1);
         this.energy = this.tileEntity.getField(2);
@@ -78,41 +68,24 @@ public class ContainerBlastFurnace extends Container {
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
-
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-
             if (index == 3) {
-                if (!this.mergeItemStack(itemstack1, 4, 40, true)) {
-                    return ItemStack.EMPTY;
-                }
+                if (!this.mergeItemStack(itemstack1, 4, 40, true)) return ItemStack.EMPTY;
                 slot.onSlotChange(itemstack1, itemstack);
-            } else if (index != 2 && index != 1 && index != 0) {
-                if (index >= 4 && index < 31) {
-                    if (!this.mergeItemStack(itemstack1, 31, 40, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index >= 31 && index < 40 && !this.mergeItemStack(itemstack1, 4, 31, false)) {
-                    return ItemStack.EMPTY;
+            } else if (index > 3) {
+                if (!this.mergeItemStack(itemstack1, 0, 3, false)) {
+                    if (index < 31) {
+                        if (!this.mergeItemStack(itemstack1, 31, 40, false)) return ItemStack.EMPTY;
+                    } else if (!this.mergeItemStack(itemstack1, 4, 31, false)) return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
+            } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) return ItemStack.EMPTY;
+            if (itemstack1.isEmpty()) slot.putStack(ItemStack.EMPTY);
+            else slot.onSlotChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) return ItemStack.EMPTY;
             slot.onTake(playerIn, itemstack1);
         }
-
         return itemstack;
     }
 }

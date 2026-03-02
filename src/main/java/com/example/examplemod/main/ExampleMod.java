@@ -1,12 +1,13 @@
-package com.example.examplemod;
+package com.example.examplemod.main;
 
+import com.example.examplemod.discord.DiscordManager;
+import com.example.examplemod.machines.BlastFurnace.GuiHandler;
+import com.example.examplemod.machines.BlastFurnace.TileEntityBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,7 +28,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
-import java.awt.*;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
@@ -40,13 +40,9 @@ import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -94,7 +90,6 @@ public class ExampleMod {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation("examplemod", "blast_furnace"));
-        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
         if (event.getSide().isClient()) {
             DiscordManager.start();
         }

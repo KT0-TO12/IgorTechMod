@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.example.examplemod.machines.BlastFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +13,7 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-        if (ID == 1) { 
+        if (ID == 1) {
             if (te instanceof TileEntityBlastFurnace) {
                 return new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
             }
