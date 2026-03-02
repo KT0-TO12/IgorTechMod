@@ -10,7 +10,6 @@ ile.statue_block.name=statue
 tile.uranium_ore.name=uranium ore
 item.uranium_ingot.name=uranium ingor
 item.titanium_ore.name=titanium ore
-tile.new_titanium_furnace=blast furnace(in development)
 tile.new_statue_block_2.name=NOTHING
 tile.new_statue_block.name=NOTHING2
 # Статуэтка

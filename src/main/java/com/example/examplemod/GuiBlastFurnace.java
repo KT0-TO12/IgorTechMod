@@ -17,16 +17,13 @@ public class GuiBlastFurnace extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        // Отрисовка текста поверх слотов по координатам из контейнера
         this.fontRenderer.drawString("Input 1", 38, 7, 0xBABABA);
         this.fontRenderer.drawString("Fuel", 43, 43, 0xBABABA);
         this.fontRenderer.drawString("Input 2", 70, 24, 0xBABABA);
         this.fontRenderer.drawString("Output", 120, 24, 0xBABABA);
 
-        // Текст инвентаря игрока над нижней частью
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
 
-        // Отображение процентов заряда текстом для точности
         int energy = this.tileEntity.getField(2);
         this.fontRenderer.drawString(energy + "%", 10, 10, 0xFFAA00);
     }

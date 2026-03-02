@@ -13,7 +13,7 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-        if (ID == 1) { // Наш ID для доменной печи
+        if (ID == 1) { 
             if (te instanceof TileEntityBlastFurnace) {
                 return new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
             }
@@ -21,7 +21,7 @@ public class GuiHandler implements IGuiHandler {
         return null;
     }
 
-    // Вызывается на стороне клиента для отрисовки интерфейса
+
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));

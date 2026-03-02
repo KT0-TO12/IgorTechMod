@@ -25,7 +25,6 @@ public class BlockBlastFurnace extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            // Открываем GUI через ID (например, 1)
             playerIn.openGui(ExampleMod.instance, 1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;

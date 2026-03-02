@@ -22,7 +22,6 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = ExampleMod.examplemod)
 public class WolfArmorEffects {
 
-    // Уникальные ID для модификаторов атрибутов
     private static final UUID HEALTH_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-1234567890ab");
     private static final UUID DAMAGE_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-2345678901bc");
 
@@ -34,15 +33,12 @@ public class WolfArmorEffects {
         boolean hasArmor = wolf.getEntityData().getBoolean("has_dog_armor");
 
         if (wolf.isTamed() && hasArmor) {
-            // Применяем усиление характеристик
             applyAttributes(wolf);
 
-            // основные эффекты брони
             wolf.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 210, 2, false, false));
             wolf.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 210, 2, false, false));
             wolf.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 210, 0, false, false));
 
-            // Очистка от паразитов и дебаффов
             List<Potion> toRemove = new ArrayList<>();
             for (PotionEffect effect : wolf.getActivePotionEffects()) {
                 String name = effect.getPotion().getRegistryName().toString();
@@ -56,19 +52,16 @@ public class WolfArmorEffects {
             removeAttributes(wolf);
         }
 
-        //Применяем наследственные эффекты
         applyInheritance(wolf);
     }
 
     private static void applyAttributes(EntityWolf wolf) {
-        //Здоровье
         IAttributeInstance maxHealth = wolf.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
         if (maxHealth.getModifier(HEALTH_UUID) == null) {
             maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 3.5D, 3));
             wolf.setHealth(wolf.getMaxHealth());
         }
 
-        //Урон
         IAttributeInstance attackDamage = wolf.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         if (attackDamage != null && attackDamage.getModifier(DAMAGE_UUID) == null) {
             attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 3.5D, 3));

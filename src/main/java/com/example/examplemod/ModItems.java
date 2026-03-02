@@ -42,8 +42,7 @@ public class ModItems {
         };
         registerItem(registry, DOG_ARMOR, "new_dog_armor");
 
-        // Остальные предметы
-        INFINITE_BATTERY = registerItem(registry, new Item(), "infinite_battery"); // Замени на new ItemInfiniteBattery(), если класс готов
+        INFINITE_BATTERY = registerItem(registry, new Item(), "infinite_battery");
         STEEL_INGOT = registerItem(registry, new Item(), "steel_ingot");
         URANIUM_INGOT = registerItem(registry, new Item(), "uranium_ingot");
         TITANIUM_INGOT = registerItem(registry, new Item(), "new_titanium_ingot");

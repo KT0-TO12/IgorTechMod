@@ -20,10 +20,7 @@ public class DiscordManager {
                     }
                 }).build();
 
-        // Инициализация
         DiscordRPC.discordInitialize(APP_ID, handlers, true);
-
-        // Установка начального статуса
         updatePresence("В главном меню", "Подготовка к игре");
     }
 

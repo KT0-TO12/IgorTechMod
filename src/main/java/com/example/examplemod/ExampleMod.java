@@ -100,7 +100,6 @@ public class ExampleMod {
         }
 
         GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation("examplemod", "new_statue_tile"));
-        //GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
     }
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -113,7 +112,6 @@ public class ExampleMod {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        // Регистрация моделей, чтобы предметы не были черно-фиолетовыми
         registerModel(URANIUM_INGOT);
         registerModel(TITANIUM_INGOT);
         registerModel(GAS_FILTER);
@@ -123,15 +121,13 @@ public class ExampleMod {
         registerModel(DOG_TAIL);
         registerModel(DOG_ARMOR);
         registerModel(INFINITE_BATTERY);
-
-        // Для блоков (ItemBlock)
         registerModel(ITEM_STATUE);
         registerModel(ITEM_STATUE_2);
         registerModel(ITEM_FURNACE);
     }
 
     public static void registerModel(Item item) {
-        if (item != null && item.getRegistryName() != null) { // Проверка спасает от краша
+        if (item != null && item.getRegistryName() != null) {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
         }
     }
@@ -145,10 +141,6 @@ public class ExampleMod {
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel",STEEL_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
-//        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-//        if (event.getSide() == Side.CLIENT) {
-//            registerDogLayer();
-//        }
     }
 
     @Mod.EventHandler
@@ -201,22 +193,6 @@ public class ExampleMod {
             setMaxStackSize(1);
         }
 
-        //        /**
-//         * Логика бесконечной энергии через NBT.
-//         * Вызывается каждый тик, пока предмет в инвентаре.
-//         */
-//        @Override
-//        public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-//            if (!stack.hasTagCompound()) {
-//                stack.setTagCompound(new NBTTagCompound());
-//            }
-//
-//            NBTTagCompound nbt = stack.getTagCompound();
-//            nbt.setLong("energy", Long.MAX_VALUE);
-//            nbt.setLong("max_energy", Long.MAX_VALUE);
-//            nbt.setInteger("charge", Integer.MAX_VALUE);
-//        }
-        //описание
         @Override
         @SideOnly(Side.CLIENT)
         public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -230,57 +206,8 @@ public class ExampleMod {
 
             }
         }
-
-//        @Override
-//        public boolean showDurabilityBar(ItemStack stack) {
-//            return true;
-//        }
-//
-//        @Override
-//        public double getDurabilityForDisplay(ItemStack stack) {
-//            // 0.0 - полная полоска, 1.0 - пустая.
-//            return 0.0;
-//        }
     }
 }
-
-
-
-//печь
-class BlockTitaniumFurnace extends Block {
-    public BlockTitaniumFurnace(String name) {
-          super(Material.IRON);
-//        setUnlocalizedName(name);
-//        setRegistryName(name);
-//        setCreativeTab(ExampleMod.MOD_TAB);
-//        setHardness(3.5F);
-    }
-
-//    @Override
-//    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-//        if (!world.isRemote) {
-//            player.openGui(ExampleMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
-//        }
-//        return true;
-//    }
-//
-//    @Override public boolean hasTileEntity(IBlockState s) { return true; }
-//    @Override public TileEntity createTileEntity(World w, IBlockState s) { return new TileEntityTitaniumFurnace(); }
-//
-//    @Override
-//    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-//        TileEntity te = world.getTileEntity(pos);
-//        if (te instanceof TileEntityTitaniumFurnace) {
-//            TileEntityTitaniumFurnace furnace = (TileEntityTitaniumFurnace) te;
-//            for (int i = 0; i < furnace.getSizeInventory(); i++) {
-//                ItemStack stack = furnace.getStackInSlot(i);
-//                if (!stack.isEmpty()) InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-//            }
-//        }
-//        super.breakBlock(world, pos, state);
-//    }
-}
-
 
 class BlockStatue extends Block {
     protected static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.3D, 0.0D, 0.3D, 0.7D, 0.5D, 0.7D);
@@ -310,18 +237,14 @@ class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {
     @Override
     public void render(TileEntityStatue te, double x, double y, double z, float pt, int ds, float a) {
         GlStateManager.pushMatrix();
-        //Позиционирование
+
         GlStateManager.translate(x + 0.5, y, z + 0.5);
-        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F); // Переворачиваем модель ногами вниз
+        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
 
-        //Масштаб
         GlStateManager.scale(0.3F, 0.3F, 0.3F);
-        GlStateManager.translate(0.0F, -1.5F, 0.0F); // Центрируем по вертикали
 
-        //Текстура
         bindTexture(SKIN);
 
-        //Отрисовка всех частей
         float s = 0.0625F;
         renderModel(s);
 
@@ -357,7 +280,7 @@ class RenderStatueItem extends TileEntityItemStackRenderer {
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.5F, 0.2F, 0.5F);
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(0.35F, 0.35F, 0.35F); // Чуть крупнее для инвентаря
+        GlStateManager.scale(0.35F, 0.35F, 0.35F);
         GlStateManager.translate(0.0F, -1.5F, 0.0F);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(SKIN);

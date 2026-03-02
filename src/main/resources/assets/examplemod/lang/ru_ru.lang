@@ -11,7 +11,6 @@ ile.statue_block.name=статуэтка
 tile.uranium_ore.name=урановая руда
 item.uranium_ingot.name=слиток урана
 item.titanium_ore.name=титановая руда
-tile.new_titanium_furnace=доменная печь(в разработке)
 tile.new_statue_block_2.name=НИЧЕГО
 tile.new_statue_block.name=НИЧЕГО2
 # Статуэтка
