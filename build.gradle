@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
-        //  плагин для вшивания библиотек
+        // Плагин для вшивания библиотек
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
@@ -20,7 +20,13 @@ version = '1.0'
 group = 'com.yourname.modid'
 archivesBaseName = 'modid'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+sourceCompatibility = targetCompatibility = '1.8'
+
+// Создаем конфигурацию shadow, чтобы плагин знал, что паковать
+configurations {
+    shadow
+    implementation.extendsFrom(shadow)
+}
 
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
@@ -45,20 +51,31 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
-    // Библиотека Discord
-    compile 'com.github.Vatuu:discord-rpc:1.6.2'
+
+    // Библиотека Discord теперь помечена как 'shadow'
+    shadow 'com.github.Vatuu:discord-rpc:1.6.2'
 }
 
-// Настройка ShadowJar, чтобы библиотека Discord попала внутрь мода
 shadowJar {
+    // Указываем использовать нашу конфигурацию shadow
+    configurations = [project.configurations.shadow]
+
+    // Удаляем лишнее, чтобы Forge не ругался на "битый архив"
+    exclude 'module-info.class'
+    exclude 'META-INF/versions/**'
+    exclude 'META-INF/maven/**'
+    exclude 'META-INF/proguard/**'
+
+    // Делаем этот файл основным
     classifier = ''
-    configurations = [project.configurations.compile]
 }
 
+// Переобфускация именно для shadowJar (обязательно для работы в лаунчере)
 reobf {
     shadowJar { }
 }
 
+// Связываем процессы сборки
 jar.finalizedBy('reobfJar')
 build.dependsOn shadowJar
 

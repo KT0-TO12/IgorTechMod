@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = ExampleMod.PESPATRON)
+@Mod.EventBusSubscriber(modid = ExampleMod.examplemod)
 public class WolfArmorEffects {
 
     // Уникальные ID для модификаторов атрибутов

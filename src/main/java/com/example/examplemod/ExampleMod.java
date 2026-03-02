@@ -1,7 +1,9 @@
 package com.example.examplemod;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -15,6 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,16 +55,16 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid = ExampleMod.PESPATRON, name = ExampleMod.NAME, version = ExampleMod.VERSION)
+@Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 @Mod.EventBusSubscriber
 public class ExampleMod {
-
+    public static SimpleNetworkWrapper network;
     public static Item INFINITE_BATTERY;
-    public static final String PESPATRON = "examplemod";
+    public static final String examplemod = "examplemod";
     public static final String NAME = "Example Mod";
     public static final String VERSION = "1.1";
 
-    @Mod.Instance(PESPATRON)
+    @Mod.Instance(examplemod)
     public static ExampleMod instance;
 
     public static final CreativeTabs MOD_TAB = new CreativeTabs("tab_pespatron") {
@@ -70,13 +73,8 @@ public class ExampleMod {
             return new ItemStack(DOG_ARMOR);
         }
     };
+    public static Item bakhmutium_ingot;
 
-    //новое
-    public static Item bakhmutium_ingot = new Item()
-            .setRegistryName("bakhmutium_ingot")
-            .setUnlocalizedName("bakhmutium_ingot")
-            .setCreativeTab(ExampleMod.MOD_TAB);
-    //другое
     public static Item STEEL_INGOT;
     public static Item TITANIUM_INGOT;
     public static Item URANIUM_INGOT;
@@ -91,59 +89,57 @@ public class ExampleMod {
     public static Block STATUE_BLOCK_2;
     public static Item ITEM_STATUE;
     public static Item ITEM_STATUE_2;
-    public static Block TITANIUM_FURNACE;
     public static Item ITEM_FURNACE;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(PESPATRON, "blast_furnace"));
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation("examplemod", "blast_furnace"));
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
         if (event.getSide().isClient()) {
             DiscordManager.start();
         }
-        // БЛОКИ
+
+        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation("examplemod", "new_statue_tile"));
+        //GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
+    }
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
         STATUE_BLOCK = new LayerDogArmor.Statue("new_statue_block");
         STATUE_BLOCK_2 = new LayerDogArmor.Statue("new_statue_block_2");
-        TITANIUM_FURNACE = new BlockTitaniumFurnace("new_titanium_furnace");
 
-        // ПРЕДМЕТЫ
-        INFINITE_BATTERY = new ItemInfiniteBattery();
-        STEEL_INGOT = new ItemBase("steel_ingot");
-        URANIUM_INGOT = new ItemBase("uranium_ingot");
-        TITANIUM_INGOT = new ItemBase("new_titanium_ingot");
-        GAS_FILTER = new ItemBase("new_gas_filter");
-        ARMOR_PLATE = new ItemBase("new_armor_plate");
-        DOG_HELMET = new ItemBase("new_dog_helmet");
-        DOG_CHESTPLATE = new ItemBase("new_dog_chestplate");
-        DOG_TAIL = new ItemBase("new_dog_tail");
-        DOG_ARMOR = new ItemBase("new_dog_armor") {
+        event.getRegistry().register(STATUE_BLOCK);
+        event.getRegistry().register(STATUE_BLOCK_2);
+    }
 
-            @Override
-            @SideOnly(Side.CLIENT)
-            public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        // Регистрация моделей, чтобы предметы не были черно-фиолетовыми
+        registerModel(URANIUM_INGOT);
+        registerModel(TITANIUM_INGOT);
+        registerModel(GAS_FILTER);
+        registerModel(ARMOR_PLATE);
+        registerModel(DOG_HELMET);
+        registerModel(DOG_CHESTPLATE);
+        registerModel(DOG_TAIL);
+        registerModel(DOG_ARMOR);
+        registerModel(INFINITE_BATTERY);
 
-                tooltip.add(TextFormatting.GRAY + "Легендарная броня рейнжера НКР но теперь для бурмалдаки");
+        // Для блоков (ItemBlock)
+        registerModel(ITEM_STATUE);
+        registerModel(ITEM_STATUE_2);
+        registerModel(ITEM_FURNACE);
+    }
 
-                if (GuiScreen.isShiftKeyDown()) {
-                    tooltip.add(TextFormatting.GOLD + "пиздатость: " + TextFormatting.WHITE + "10/10");
-                    tooltip.add(TextFormatting.RED + "ну и конечно: " + TextFormatting.WHITE + "ГДЕ БЛЯДЬ СЕРВОПРИВОДЫ!?");
-                } else {
-                    tooltip.add(TextFormatting.DARK_GRAY + "Нажми " + TextFormatting.AQUA + "Shift" + TextFormatting.DARK_GRAY + " для инфо");
-                }
-            }
-        };
-
-        // ПРЕДМЕТНЫЕ ФОРМЫ БЛОКОВ
-        ITEM_STATUE = new net.minecraft.item.ItemBlock(STATUE_BLOCK).setRegistryName("new_statue_block");
-        ITEM_STATUE_2 = new net.minecraft.item.ItemBlock(STATUE_BLOCK_2).setRegistryName("new_statue_block_2");
-        ITEM_FURNACE = new net.minecraft.item.ItemBlock(TITANIUM_FURNACE).setRegistryName("new_titanium_furnace");
-
-        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(PESPATRON, "new_statue_tile"));
-        //GameRegistry.registerTileEntity(TileEntityTitaniumFurnace.class, new ResourceLocation(PESPATRON, "new_titanium_furnace_tile"));
+    public static void registerModel(Item item) {
+        if (item != null && item.getRegistryName() != null) { // Проверка спасает от краша
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        }
     }
     //init
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ModRecipes.init();
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel",STEEL_INGOT);
@@ -174,48 +170,11 @@ public class ExampleMod {
         if (render != null) render.addLayer(new LayerDogArmor(render));
     }
 
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        event.getRegistry().registerAll(TITANIUM_FURNACE, STATUE_BLOCK_2, STATUE_BLOCK);
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(new ItemBlock(ModBlocks.BAKHMUTIUM_ORE).setRegistryName(ModBlocks.BAKHMUTIUM_ORE.getRegistryName()));
-        event.getRegistry().registerAll(INFINITE_BATTERY, DOG_ARMOR, DOG_HELMET, DOG_CHESTPLATE, DOG_TAIL, ARMOR_PLATE,TITANIUM_INGOT,URANIUM_INGOT,STEEL_INGOT, ITEM_STATUE_2, ITEM_FURNACE, GAS_FILTER);
-    }
-
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        registerModel(bakhmutium_ingot);
-        registerModel(DOG_ARMOR);
-        registerModel(DOG_HELMET);
-        registerModel(DOG_CHESTPLATE);
-        registerModel(DOG_TAIL);
-        registerModel(ARMOR_PLATE);
-        registerModel(TITANIUM_INGOT);
-        registerModel(URANIUM_INGOT);
-        registerModel(STEEL_INGOT);
-        registerModel(ITEM_STATUE);
-        registerModel(ITEM_STATUE_2);
-        registerModel(GAS_FILTER);
-        registerModel(ITEM_FURNACE);
-
-        if (Side.CLIENT == net.minecraftforge.fml.common.FMLCommonHandler.instance().getSide()) {
-            initClientRenders();
-        }
-    }
 
     @SideOnly(Side.CLIENT)
     private static void initClientRenders() {
         ITEM_STATUE.setTileEntityItemStackRenderer(new RenderStatueItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStatue.class, new RenderStatueBlock());
-    }
-
-    public static void registerModel(Item item) {
-        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(item, 0,
-                new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 
     @SubscribeEvent
@@ -346,7 +305,7 @@ class TileEntityStatue extends TileEntity {}
 class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {
 
     private final ModelPlayer model = new ModelPlayer(0.0F, false);
-    private static final ResourceLocation SKIN = new ResourceLocation(ExampleMod.PESPATRON, "textures/entity/my_skin.png");
+    private static final ResourceLocation SKIN = new ResourceLocation(ExampleMod.examplemod, "textures/entity/my_skin.png");
 
     @Override
     public void render(TileEntityStatue te, double x, double y, double z, float pt, int ds, float a) {
@@ -391,7 +350,7 @@ class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {
 @SideOnly(Side.CLIENT)
 class RenderStatueItem extends TileEntityItemStackRenderer {
     private final ModelPlayer model = new ModelPlayer(0.0F, false);
-    private static final ResourceLocation SKIN = new ResourceLocation(ExampleMod.PESPATRON, "textures/entity/my_skin.png");
+    private static final ResourceLocation SKIN = new ResourceLocation(ExampleMod.examplemod , "textures/entity/my_skin.png");
 
     @Override
     public void renderByItem(ItemStack stack) {
@@ -433,7 +392,7 @@ class ItemBase extends Item {
 
 @SideOnly(Side.CLIENT)
 class LayerDogArmor implements LayerRenderer<EntityWolf> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.PESPATRON, "textures/entity/new_dog_armor.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(ExampleMod.examplemod, "textures/entity/new_dog_armor.png");
     private final RenderWolf renderer;
     private final ModelWolf modelArmor = new ModelWolf();
 
@@ -463,12 +422,12 @@ class LayerDogArmor implements LayerRenderer<EntityWolf> {
 
     public static class Statue extends Block {
         public Statue(String name) {
-            super(Material.IRON);
-            setUnlocalizedName(name);
-            setRegistryName(name);
-            if (!name.equals("statue_block_2")) {
-                setCreativeTab(ExampleMod.MOD_TAB);
-            }
+
+            super(net.minecraft.block.material.Material.CLAY);
+            this.setRegistryName(name);
+            this.setHardness(3.0F);
+            this.setResistance(10.0F);
+            this.setSoundType(SoundType.METAL);
         }
     }
 }

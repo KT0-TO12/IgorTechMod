@@ -1,47 +1,73 @@
 package com.example.examplemod;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiBlastFurnace extends GuiContainer {
     private final TileEntityBlastFurnace tileEntity;
 
-    public GuiBlastFurnace(InventoryPlayer playerInv, TileEntityBlastFurnace tile) {
-        super(new ContainerBlastFurnace(playerInv, tile));
-        this.tileEntity = tile;
+    public GuiBlastFurnace(InventoryPlayer playerInv, TileEntityBlastFurnace tileEntity) {
+        super(new ContainerBlastFurnace(playerInv, tileEntity));
+        this.tileEntity = tileEntity;
         this.xSize = 176;
         this.ySize = 166;
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        // Отрисовка текста поверх слотов по координатам из контейнера
+        this.fontRenderer.drawString("Input 1", 38, 7, 0xBABABA);
+        this.fontRenderer.drawString("Fuel", 43, 43, 0xBABABA);
+        this.fontRenderer.drawString("Input 2", 70, 24, 0xBABABA);
+        this.fontRenderer.drawString("Output", 120, 24, 0xBABABA);
 
-        drawRect(x, y, x + xSize, y + ySize, 0xFF404040);
+        // Текст инвентаря игрока над нижней частью
+        this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
 
-
-        drawRect(x, y, x + xSize, y + 2, 0xFF8B8B8B); // Верх
-        drawRect(x, y + ySize - 2, x + xSize, y + ySize, 0xFF8B8B8B); // Низ
-        drawRect(x, y, x + 2, y + ySize, 0xFF8B8B8B); // Лево
-        drawRect(x + xSize - 2, y, x + xSize, y + ySize, 0xFF8B8B8B); // Право
-
-        drawCustomSlot(x + 55, y + 16);
-        drawCustomSlot(x + 55, y + 52);
-        drawCustomSlot(x + 115, y + 34);
-
-
-        int progress = (int)(this.tileEntity.getField(0) * 24 / this.tileEntity.getField(1));
-        drawRect(x + 79, y + 34, x + 79 + 24, y + 34 + 17, 0xFF222222);
-        drawRect(x + 79, y + 34, x + 79 + progress, y + 34 + 17, 0xFFE52E2E);
+        // Отображение процентов заряда текстом для точности
+        int energy = this.tileEntity.getField(2);
+        this.fontRenderer.drawString(energy + "%", 10, 10, 0xFFAA00);
     }
 
-    private void drawCustomSlot(int x, int y) {
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        int i = (this.width - this.xSize) / 2;
+        int j = (this.height - this.ySize) / 2;
 
-        drawRect(x, y, x + 18, y + 18, 0xFF111111);
-        drawRect(x + 1, y + 1, x + 17, y + 17, 0xFF8B8B8B); // Внутренность
+        drawRect(i, j, i + xSize, j + ySize, 0xFF2D2D2D);
+
+        drawRect(i + 5, j + 80, i + xSize - 5, j + 82, 0xFF121212);
+
+        drawSlotBack(i + 44, j + 17);  // Slot 0
+        drawSlotBack(i + 44, j + 53);  // Slot 1
+        drawSlotBack(i + 71, j + 35);  // Slot 2
+        drawSlotBack(i + 126, j + 35); // Slot 3
+
+
+        int energy = this.tileEntity.getField(2);
+        int energyBarHeight = (int) (energy * 0.45);
+
+
+        drawRect(i + 12, j + 20, i + 20, j + 65, 0xFF121212);
+
+        if (energy > 0) {
+            drawRect(i + 13, j + 64 - energyBarHeight, i + 19, j + 64, 0xFFFF8C00);
+        }
+
+        int cookTime = this.tileEntity.getField(0);
+        int totalTime = this.tileEntity.getField(1);
+        if (cookTime > 0) {
+            int progressWidth = (int) ((double) cookTime / totalTime * 24);
+            drawRect(i + 95, j + 41, i + 120, j + 45, 0xFF121212);
+            drawRect(i + 95, j + 41, i + 95 + progressWidth, j + 45, 0xFF00FF00);
+        }
+    }
+
+    private void drawSlotBack(int x, int y) {
+        drawRect(x - 1, y - 1, x + 17, y + 17, 0xFF121212);
+        drawRect(x, y, x + 16, y + 16, 0xFF8B8B8B);
     }
 
     @Override
