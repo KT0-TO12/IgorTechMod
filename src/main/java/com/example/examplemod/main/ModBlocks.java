@@ -1,6 +1,8 @@
 package com.example.examplemod.main;
 
 import com.example.examplemod.machines.BlastFurnace.BlockBlastFurnace;
+import com.example.examplemod.machines.EnergyStorage.BlockEnergyStorage;
+import com.example.examplemod.machines.EnergyStorage.TileEntityStatue;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -32,43 +35,49 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = ExampleMod.examplemod)
 public class ModBlocks {
 
-    public static final Block BLAST_FURNACE = new BlockBlastFurnace();
+    // 1. ОБЪЯВЛЕНИЕ БЛОКОВ
+    public static final Block BLAST_FURNACE = new BlockBlastFurnace().setCreativeTab(ExampleMod.MOD_TAB);
+
+    public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage");
 
     public static final Block BAKHMUTIUM_ORE = new Block(Material.ROCK)
-            .setRegistryName("bakhmutium_ore")
-            .setUnlocalizedName("bakhmutium_ore")
-            .setHardness(3.0F)
-            .setResistance(5.0F)
-            .setCreativeTab(ExampleMod.MOD_TAB);
+            .setRegistryName("bakhmutium_ore").setUnlocalizedName("bakhmutium_ore")
+            .setHardness(3.0F).setResistance(5.0F).setCreativeTab(ExampleMod.MOD_TAB);
 
     public static final Block URANIUM_ORE = new Block(Material.ROCK)
-            .setRegistryName("uranium_ore")
-            .setUnlocalizedName("uranium_ore")
-            .setHardness(3.0F)
-            .setResistance(10.0f);
+            .setRegistryName("uranium_ore").setUnlocalizedName("uranium_ore")
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
 
     public static final Block TITANIUM_ORE = new Block(Material.ROCK)
-            .setRegistryName("titanium_ore")
-            .setUnlocalizedName("titanium_ore")
-            .setHardness(3.0F)
-            .setResistance(10.0f);
+            .setRegistryName("titanium_ore").setUnlocalizedName("titanium_ore")
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
 
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
 
-    static {
-        URANIUM_ORE.setHarvestLevel("pickaxe", 3);
-        URANIUM_ORE.setCreativeTab(ExampleMod.MOD_TAB);
-        TITANIUM_ORE.setHarvestLevel("pickaxe", 2);
-        TITANIUM_ORE.setCreativeTab(ExampleMod.MOD_TAB);
+    // 2. РЕГИСТРАЦИЯ БЛОКОВ
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        IForgeRegistry<Block> r = event.getRegistry();
+        r.register(BLAST_FURNACE);
+        r.register(ENERGY_STORAGE);
+        r.register(BAKHMUTIUM_ORE);
+        r.register(URANIUM_ORE);
+        r.register(TITANIUM_ORE);
+        r.register(STATUE_BLOCK);
     }
 
+    // 3. РЕГИСТРАЦИЯ ITEMBLOCKS (Предметы для блоков)
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(URANIUM_ORE).setRegistryName(URANIUM_ORE.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BAKHMUTIUM_ORE).setRegistryName(BAKHMUTIUM_ORE.getRegistryName()));
-        event.getRegistry().register(new ItemBlock(BLAST_FURNACE).setRegistryName(BLAST_FURNACE.getRegistryName()));
+        IForgeRegistry<Item> r = event.getRegistry();
 
+        r.register(new ItemBlock(BLAST_FURNACE).setRegistryName(BLAST_FURNACE.getRegistryName()));
+        r.register(new ItemBlock(ENERGY_STORAGE).setRegistryName(ENERGY_STORAGE.getRegistryName()));
+        r.register(new ItemBlock(BAKHMUTIUM_ORE).setRegistryName(BAKHMUTIUM_ORE.getRegistryName()));
+        r.register(new ItemBlock(URANIUM_ORE).setRegistryName(URANIUM_ORE.getRegistryName()));
+        r.register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
+
+        // Специальный ItemBlock для статуи с описанием
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
             @SideOnly(Side.CLIENT)
@@ -82,18 +91,32 @@ public class ModBlocks {
                 }
             }
         };
-        itemStatue.setRegistryName(STATUE_BLOCK.getRegistryName());
-        event.getRegistry().register(itemStatue);
+        r.register(itemStatue.setRegistryName(STATUE_BLOCK.getRegistryName()));
     }
 
+    // 4. РЕГИСТРАЦИЯ МОДЕЛЕЙ
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        registerModel(TITANIUM_ORE);
-        registerModel(URANIUM_ORE);
-        registerModel(BAKHMUTIUM_ORE);
+        // Модели блоков
         registerModel(BLAST_FURNACE);
+        registerModel(ENERGY_STORAGE);
+        registerModel(BAKHMUTIUM_ORE);
+        registerModel(URANIUM_ORE);
+        registerModel(TITANIUM_ORE);
         registerModel(STATUE_BLOCK);
+
+        // МОДЕЛИ ПРЕДМЕТОВ (перенесено из ExampleMod, чтобы не было крашей)
+        registerItemModel(ExampleMod.URANIUM_INGOT);
+        registerItemModel(ExampleMod.TITANIUM_INGOT);
+        registerItemModel(ExampleMod.bakhmutium_ingot);
+        registerItemModel(ExampleMod.GAS_FILTER);
+        registerItemModel(ExampleMod.ARMOR_PLATE);
+        registerItemModel(ExampleMod.DOG_ARMOR);
+        registerItemModel(ExampleMod.INFINITE_BATTERY);
+        registerItemModel(ExampleMod.DOG_HELMET);
+        registerItemModel(ExampleMod.DOG_CHESTPLATE);
+        registerItemModel(ExampleMod.DOG_TAIL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -102,28 +125,34 @@ public class ModBlocks {
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
 
-    public static class BlockStatueCustom extends Block {
+    @SideOnly(Side.CLIENT)
+    private static void registerItemModel(Item item) {
+        if (item != null && item.getRegistryName() != null) {
+            ModelLoader.setCustomModelResourceLocation(item, 0,
+                    new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        }
+    }
 
+    // ВНУТРЕННИЙ КЛАСС СТАТУИ
+    public static class BlockStatueCustom extends Block {
         protected static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.9D, 0.8D);
 
         public BlockStatueCustom(String name) {
             super(Material.IRON);
-            this.setRegistryName(name);
-            this.setUnlocalizedName(name);
-            this.setCreativeTab(ExampleMod.MOD_TAB);
+            setRegistryName(name);
+            setUnlocalizedName(name);
+            setCreativeTab(ExampleMod.MOD_TAB);
         }
 
         @Override public boolean isOpaqueCube(IBlockState s) { return false; }
         @Override public boolean isFullCube(IBlockState s) { return false; }
         @Override public EnumBlockRenderType getRenderType(IBlockState s) { return EnumBlockRenderType.ENTITYBLOCK_ANIMATED; }
-
-        @Override
-        public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-            return BOUNDS;
-        }
-
+        @Override public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) { return BOUNDS; }
         @Override public boolean hasTileEntity(IBlockState s) { return true; }
+
         @Nullable
-        @Override public TileEntity createTileEntity(World w, IBlockState s) { return new TileEntityStatue(); }
+        @Override public TileEntity createTileEntity(World w, IBlockState s) {
+            return new TileEntityStatue(); // Теперь берется из отдельного файла
+        }
     }
 }

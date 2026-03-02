@@ -1,7 +1,15 @@
 package com.example.examplemod.main;
 
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraft.util.EnumFacing;
+import com.example.examplemod.IFE.IEStorage;
+import com.example.examplemod.IFE.IIEStorage;
+import com.example.examplemod.machines.EnergyStorage.TileEntityStatue;
 import com.example.examplemod.discord.DiscordManager;
-import com.example.examplemod.machines.BlastFurnace.GuiHandler;
+import com.example.examplemod.machines.EnergyStorage.TileEntityEnergyStorage;
+import com.example.examplemod.machines.handler.GuiHandler;
 import com.example.examplemod.machines.BlastFurnace.TileEntityBlastFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -9,9 +17,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -54,6 +64,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 @Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 @Mod.EventBusSubscriber
 public class ExampleMod {
+
     public static SimpleNetworkWrapper network;
     public static Item INFINITE_BATTERY;
     public static final String examplemod = "examplemod";
@@ -87,45 +98,31 @@ public class ExampleMod {
     public static Item ITEM_STATUE_2;
     public static Item ITEM_FURNACE;
 
-    @EventHandler
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation("examplemod", "blast_furnace"));
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        CapabilityManager.INSTANCE.register(IIEStorage.class, new Capability.IStorage<IIEStorage>() {
+            @Override
+            public net.minecraft.nbt.NBTBase writeNBT(Capability<IIEStorage> capability, IIEStorage instance, EnumFacing side) {
+                return new net.minecraft.nbt.NBTTagInt(instance.getEnergyStored());
+            }
+            @Override
+            public void readNBT(Capability<IIEStorage> capability, IIEStorage instance, EnumFacing side, net.minecraft.nbt.NBTBase nbt) {
+                if (instance instanceof IEStorage) {
+                    ((IEStorage) instance).setEnergy(((net.minecraft.nbt.NBTTagInt) nbt).getInt());
+                }
+            }
+        }, () -> new IEStorage(1000));
+
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
+        GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, new ResourceLocation(examplemod, "energy_storage"));
+        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(examplemod, "statue_tile"));
+
         if (event.getSide().isClient()) {
             DiscordManager.start();
         }
-
-        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation("examplemod", "new_statue_tile"));
-    }
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        STATUE_BLOCK = new LayerDogArmor.Statue("new_statue_block");
-        STATUE_BLOCK_2 = new LayerDogArmor.Statue("new_statue_block_2");
-
-        event.getRegistry().register(STATUE_BLOCK);
-        event.getRegistry().register(STATUE_BLOCK_2);
     }
 
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        registerModel(URANIUM_INGOT);
-        registerModel(TITANIUM_INGOT);
-        registerModel(GAS_FILTER);
-        registerModel(ARMOR_PLATE);
-        registerModel(DOG_HELMET);
-        registerModel(DOG_CHESTPLATE);
-        registerModel(DOG_TAIL);
-        registerModel(DOG_ARMOR);
-        registerModel(INFINITE_BATTERY);
-        registerModel(ITEM_STATUE);
-        registerModel(ITEM_STATUE_2);
-        registerModel(ITEM_FURNACE);
-    }
-
-    public static void registerModel(Item item) {
-        if (item != null && item.getRegistryName() != null) {
-            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        }
-    }
     //init
     @EventHandler
     public void init(FMLInitializationEvent event) {
@@ -137,7 +134,8 @@ public class ExampleMod {
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
     }
-
+    @CapabilityInject(IIEStorage.class)
+    public static Capability<IIEStorage> IE_ENERGY = null;
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         System.out.println("ZOV Mod: Post-Initialization завершена.");
@@ -220,8 +218,6 @@ class BlockStatue extends Block {
     @Override public TileEntity createTileEntity(World w, IBlockState s) { return new TileEntityStatue(); }
 }
 
-
-class TileEntityStatue extends TileEntity {}
 
 @SideOnly(Side.CLIENT)
 class RenderStatueBlock extends TileEntitySpecialRenderer<TileEntityStatue> {

@@ -1,61 +1,65 @@
 package com.example.examplemod.machines.BlastFurnace;
 
-import net.minecraft.init.Items;
+import com.example.examplemod.main.ExampleMod;
+import com.example.examplemod.IFE.IEStorage;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.capabilities.Capability;
+
+import javax.annotation.Nullable;
 
 public class TileEntityBlastFurnace extends TileEntity implements ITickable, IInventory {
     private NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
+    private final IEStorage energyStorage = new IEStorage(100);
     public int cookTime;
     public int totalCookTime = 200;
-    public int energy = 0;
     private int batteryTimer = 0;
 
     @Override
     public void update() {
         if (this.world.isRemote) return;
-
         ItemStack fuelStack = inventory.get(1);
-
-        if (!fuelStack.isEmpty() && fuelStack.getItem() == com.example.examplemod.main.ExampleMod.INFINITE_BATTERY) {
-            if (this.energy < 100) {
+        if (!fuelStack.isEmpty() && fuelStack.getItem() == ExampleMod.INFINITE_BATTERY) {
+            if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
                 batteryTimer++;
                 if (batteryTimer >= 20) {
-                    this.energy = Math.min(100, this.energy + 10);
+                    energyStorage.receiveEnergy(10, false);
                     batteryTimer = 0;
-                    this.markDirty();
                 }
             }
         } else {
             batteryTimer = 0;
             if (!fuelStack.isEmpty()) {
-                if (fuelStack.getItem() == Items.COAL && energy <= 98) {
-                    energy += 2;
+                if (fuelStack.getItem() == Items.COAL && energyStorage.getEnergyStored() <= 98) {
+                    energyStorage.receiveEnergy(2, false);
                     fuelStack.shrink(1);
                     this.markDirty();
-                } else if (fuelStack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && energy <= 80) {
-                    energy += 20;
+                } else if (fuelStack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && energyStorage.getEnergyStored() <= 80) {
+                    energyStorage.receiveEnergy(20, false);
                     fuelStack.shrink(1);
                     this.markDirty();
                 }
             }
         }
-
-        if (energy >= 1 && canSmelt()) {
+        if (energyStorage.getEnergyStored() >= 1 && canSmelt()) {
             cookTime++;
             if (cookTime >= totalCookTime) {
                 smeltItem();
-                if (fuelStack.isEmpty() || fuelStack.getItem() != com.example.examplemod.main.ExampleMod.INFINITE_BATTERY) {
-                    energy -= 1;
+                if (fuelStack.isEmpty() || fuelStack.getItem() != ExampleMod.INFINITE_BATTERY) {
+                    energyStorage.extractEnergy(1, false);
                 }
                 cookTime = 0;
                 this.markDirty();
@@ -70,7 +74,7 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
         ItemStack coalReagent = findInputStack(Items.COAL);
         ItemStack output = inventory.get(3);
         if (iron.isEmpty() || coalReagent.isEmpty()) return false;
-        ItemStack result = new ItemStack(com.example.examplemod.main.ExampleMod.STEEL_INGOT);
+        ItemStack result = new ItemStack(ExampleMod.STEEL_INGOT);
         if (output.isEmpty()) return true;
         if (!output.isItemEqual(result)) return false;
         return (output.getCount() + result.getCount() <= getInventoryStackLimit());
@@ -79,7 +83,7 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     private void smeltItem() {
         ItemStack iron = findInputStack(Items.IRON_INGOT);
         ItemStack coalReagent = findInputStack(Items.COAL);
-        ItemStack result = new ItemStack(com.example.examplemod.main.ExampleMod.STEEL_INGOT);
+        ItemStack result = new ItemStack(ExampleMod.STEEL_INGOT);
         if (!iron.isEmpty() && !coalReagent.isEmpty()) {
             iron.shrink(1);
             coalReagent.shrink(1);
@@ -95,10 +99,15 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        if (index == 3) return false;
-        if (index == 1) return stack.getItem() == Items.COAL || stack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) || stack.getItem() == com.example.examplemod.main.ExampleMod.INFINITE_BATTERY;
-        return stack.getItem() != Item.getItemFromBlock(Blocks.COAL_BLOCK) && stack.getItem() != com.example.examplemod.main.ExampleMod.INFINITE_BATTERY;
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == ExampleMod.IE_ENERGY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    @Nullable
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == ExampleMod.IE_ENERGY) return (T) this.energyStorage;
+        return super.getCapability(capability, facing);
     }
 
     @Override
@@ -107,20 +116,20 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.inventory);
         this.cookTime = compound.getInteger("CookTime");
-        this.energy = compound.getInteger("EnergyPercentage");
+        this.energyStorage.readFromNBT(compound);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("CookTime", this.cookTime);
-        compound.setInteger("EnergyPercentage", this.energy);
+        this.energyStorage.writeToNBT(compound);
         ItemStackHelper.saveAllItems(compound, this.inventory);
         return compound;
     }
 
-    @Override public int getField(int id) { if (id == 0) return cookTime; if (id == 1) return totalCookTime; if (id == 2) return energy; return 0; }
-    @Override public void setField(int id, int value) { if (id == 0) this.cookTime = value; else if (id == 1) this.totalCookTime = value; else if (id == 2) this.energy = value; }
+    @Override public int getField(int id) { if (id == 0) return cookTime; if (id == 1) return totalCookTime; if (id == 2) return energyStorage.getEnergyStored(); return 0; }
+    @Override public void setField(int id, int value) { if (id == 0) this.cookTime = value; else if (id == 1) this.totalCookTime = value; else if (id == 2) this.energyStorage.setEnergy(value); }
     @Override public int getFieldCount() { return 3; }
     @Override public int getSizeInventory() { return 4; }
     @Override public boolean isEmpty() { for(ItemStack s : inventory) if(!s.isEmpty()) return false; return true; }
@@ -133,8 +142,10 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     @Override public void clear() { inventory.clear(); }
     @Override public String getName() { return "container.blast_furnace"; }
     @Override public boolean hasCustomName() { return false; }
+    @Override public ITextComponent getDisplayName() { return new TextComponentTranslation(this.getName()); }
     @Override public void openInventory(EntityPlayer p) {}
     @Override public void closeInventory(EntityPlayer p) {}
+    @Override public boolean isItemValidForSlot(int i, ItemStack stack) { if (i == 3) return false; return true; }
     @Override public SPacketUpdateTileEntity getUpdatePacket() { return new SPacketUpdateTileEntity(pos, 1, getUpdateTag()); }
     @Override public NBTTagCompound getUpdateTag() { return writeToNBT(new NBTTagCompound()); }
 }

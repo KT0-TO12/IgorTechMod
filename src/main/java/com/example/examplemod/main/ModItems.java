@@ -17,8 +17,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
 import static com.example.examplemod.main.ExampleMod.*;
+import static com.example.examplemod.main.ModBlocks.ENERGY_STORAGE;
 
 @Mod.EventBusSubscriber(modid = "examplemod")
 public class ModItems {
@@ -66,6 +66,7 @@ public class ModItems {
     }
 
     private static void registerItemBlock(IForgeRegistry<Item> registry, Block block, String name) {
+        registry.register(new ItemBlock(ENERGY_STORAGE).setRegistryName(ENERGY_STORAGE.getRegistryName()));
         ItemBlock itemBlock = new ItemBlock(block);
         itemBlock.setRegistryName(name);
         registry.register(itemBlock);
