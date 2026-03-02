@@ -1,6 +1,7 @@
 package com.example.examplemod.machines.EnergyStorage;
 
 import com.example.examplemod.IFE.IEStorage;
+import com.example.examplemod.main.ExampleMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -18,8 +19,20 @@ public class TileEntityEnergyStorage extends TileEntity implements ITickable, II
 
     @Override
     public void update() {
+        // Выполняем логику только на стороне сервера
         if (!world.isRemote) {
-            // Здесь будет логика зарядки/разрядки батарейки из слота 0
+
+            // 1. Получаем предмет из слота 0 (наш единственный слот)
+            ItemStack stack = inventory.get(0);
+
+            if (!stack.isEmpty() && stack.getItem() == ExampleMod.INFINITE_BATTERY) {
+
+                if (world.getTotalWorldTime() % 2 == 0) {
+                    this.storage.receiveEnergy(1, false);
+
+                    this.markDirty();
+                }
+            }
         }
     }
 

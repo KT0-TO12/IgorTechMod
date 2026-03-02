@@ -37,7 +37,8 @@ public class ModBlocks {
 
     // 1. ОБЪЯВЛЕНИЕ БЛОКОВ
     public static final Block BLAST_FURNACE = new BlockBlastFurnace().setCreativeTab(ExampleMod.MOD_TAB);
-
+    public static final Block CABLE_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockCable("cable_eblock").setCreativeTab(ExampleMod.MOD_TAB);
+    public static final Block TRANSFORMATOR_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockTransformer("transformer_eblock").setCreativeTab(ExampleMod.MOD_TAB);
     public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage");
 
     public static final Block BAKHMUTIUM_ORE = new Block(Material.ROCK)
@@ -58,6 +59,8 @@ public class ModBlocks {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
+        r.register(CABLE_EBLOCK);
+        r.register(TRANSFORMATOR_EBLOCK);
         r.register(BLAST_FURNACE);
         r.register(ENERGY_STORAGE);
         r.register(BAKHMUTIUM_ORE);
@@ -76,7 +79,8 @@ public class ModBlocks {
         r.register(new ItemBlock(BAKHMUTIUM_ORE).setRegistryName(BAKHMUTIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(URANIUM_ORE).setRegistryName(URANIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
-
+        r.register(new ItemBlock(CABLE_EBLOCK).setRegistryName(CABLE_EBLOCK.getRegistryName()));
+        r.register(new ItemBlock(TRANSFORMATOR_EBLOCK).setRegistryName(TRANSFORMATOR_EBLOCK.getRegistryName()));
         // Специальный ItemBlock для статуи с описанием
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
@@ -100,13 +104,14 @@ public class ModBlocks {
     public static void registerModels(ModelRegistryEvent event) {
         // Модели блоков
         registerModel(BLAST_FURNACE);
+        // registerModel();
         registerModel(ENERGY_STORAGE);
         registerModel(BAKHMUTIUM_ORE);
         registerModel(URANIUM_ORE);
         registerModel(TITANIUM_ORE);
         registerModel(STATUE_BLOCK);
 
-        // МОДЕЛИ ПРЕДМЕТОВ (перенесено из ExampleMod, чтобы не было крашей)
+
         registerItemModel(ExampleMod.URANIUM_INGOT);
         registerItemModel(ExampleMod.TITANIUM_INGOT);
         registerItemModel(ExampleMod.bakhmutium_ingot);

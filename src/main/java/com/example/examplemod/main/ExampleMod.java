@@ -1,5 +1,7 @@
 package com.example.examplemod.main;
 
+import com.example.examplemod.EnergyBlocks.TileEntityCable;
+import com.example.examplemod.EnergyBlocks.TileEntityTransformer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -100,6 +102,8 @@ public class ExampleMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation("examplemod", "tile_cable"));
+        GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation("examplemod", "tile_transformer"));
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         CapabilityManager.INSTANCE.register(IIEStorage.class, new Capability.IStorage<IIEStorage>() {
             @Override
