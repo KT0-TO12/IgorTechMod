@@ -13,6 +13,8 @@ item.uranium_ingot.name=слиток урана
 item.titanium_ore.name=титановая руда
 tile.new_statue_block_2.name=НИЧЕГО
 tile.new_statue_block.name=НИЧЕГО2
+# компоненты
+item.tranzistor_ecomp.name=транзистор
 # Статуэтка
 statue.tooltip.name=§6Персональная статуэтка
 statue.tooltip.hold_shift=§8[Зажмите §7LSHIFT§8 для инфо]

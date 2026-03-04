@@ -81,6 +81,10 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     }
 
     private void smeltItem() {
+        //рецет 1
+        ItemStack flint = findInputStack(Items.FLINT);
+        ItemStack Reagent = findInputStack(Items.WATER_BUCKET);
+        //рецепт 2
         ItemStack iron = findInputStack(Items.IRON_INGOT);
         ItemStack coalReagent = findInputStack(Items.COAL);
         ItemStack result = new ItemStack(ExampleMod.STEEL_INGOT);

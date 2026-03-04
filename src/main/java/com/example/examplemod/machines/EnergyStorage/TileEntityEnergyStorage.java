@@ -19,10 +19,8 @@ public class TileEntityEnergyStorage extends TileEntity implements ITickable, II
 
     @Override
     public void update() {
-        // Выполняем логику только на стороне сервера
         if (!world.isRemote) {
 
-            // 1. Получаем предмет из слота 0 (наш единственный слот)
             ItemStack stack = inventory.get(0);
 
             if (!stack.isEmpty() && stack.getItem() == ExampleMod.INFINITE_BATTERY) {

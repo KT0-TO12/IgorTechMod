@@ -19,13 +19,11 @@ public class TileEntityCable extends TileEntity implements ITickable {
             TileEntity te = world.getTileEntity(targetPos);
 
             if (te != null && te.hasCapability(ExampleMod.IE_ENERGY, facing.getOpposite())) {
-                Object cap = te.getCapability(ExampleMod.IE_ENERGY, facing.getOpposite());
-                if (cap instanceof IEStorage) {
-                    IEStorage targetStorage = (IEStorage) cap;
-                    int transfer = Math.min(storage.getEnergyStored(), 100);
-                    int received = targetStorage.receiveEnergy(transfer, false);
-                    storage.extractEnergy(received, false);
-                }
+                com.example.examplemod.IFE.IIEStorage cap = te.getCapability(ExampleMod.IE_ENERGY, facing.getOpposite());
+                int canSend = Math.min(storage.getEnergyStored(), 100);
+                int received = cap.receiveEnergy(canSend, false);
+                storage.extractEnergy(received, false);
+                if (storage.getEnergyStored() <= 0) break;
             }
         }
     }

@@ -19,12 +19,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -47,7 +43,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -58,7 +53,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -83,7 +77,57 @@ public class ExampleMod {
         }
     };
     public static Item bakhmutium_ingot;
+    //электроника
+    //базы
+    public static Item MICROCONTROLLER_BASE_ECOMP;
+    public static Item MICROCHIP_BASE_ECOMP;
+    public static Item ADVANCED_MICROCHIP_BASE_ECOMP;
+    public static Item SMD_BASE_ECOMP;
+    //основа
+    public static Item SILICON_PLATE_ECOMP;
+    public static Item TRANZISTOR_ECOMP;
+    public static Item VACUM_TUBE_ECOMP;
+    public static Item COPPER_PLATE_ECOMP;
+    public static Item TEXTOLITE_PLATE_ECOMP;
+    public static Item CAPACITOR_ECOMP;
+    public static Item RESISTOR_ECOMP;
 
+    //микрочипы и микроконтроллеры
+    public static Item MICROCHIP_100k_ECOMP;
+    public static Item MICROCHIP_500k_ECOMP;
+    public static Item MICROCHIP_1m_ECOMP;
+    public static Item MICROCHIP_10m_ECOMP;
+    //продвинутые чипы от 100m
+    public static Item MICROCHIP_ADVANCED_100m_ECOMP;
+    public static Item MICROCHIP_ADVANCED_500m_ECOMP;
+    public static Item MICROCHIP_ADVANCED_1b_ECOMP;
+    //пластины
+    public static Item SILICON_PLATE_WITH_1_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_5_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_10_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_50_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_100_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_500_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_1k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_5k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_10k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_50k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_100k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_500k_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_1m_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_10m_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_100m_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_500m_TRANZISTORS_ECOMP;
+    public static Item SILICON_PLATE_WITH_1b_TRANZISTORS_ECOMP;
+    //СМД
+    public static Item SMD_TRANZISTOR_ECOMP;
+    public static Item SMD_RESISTOR_ECOMP;
+    public static Item SMD_CAPACITOR_ECOMP;
+    //платы и схемы
+    public static Item VACUM_TUBE_PLATE_ECOMP;
+    public static Item INEGRAL_ECOMP;
+    public static Item CAPACITOR_PLATE_ECOMP;
+    //другое
     public static Item STEEL_INGOT;
     public static Item TITANIUM_INGOT;
     public static Item URANIUM_INGOT;
@@ -93,12 +137,10 @@ public class ExampleMod {
     public static Item DOG_CHESTPLATE;
     public static Item DOG_TAIL;
     public static Item DOG_ARMOR;
-
     public static Block STATUE_BLOCK;
     public static Block STATUE_BLOCK_2;
     public static Item ITEM_STATUE;
-    public static Item ITEM_STATUE_2;
-    public static Item ITEM_FURNACE;
+
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

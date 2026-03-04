@@ -1,5 +1,7 @@
 package com.example.examplemod.machines.handler;
 
+import com.example.examplemod.EnergyBlocks.ContainerTransformer;
+import com.example.examplemod.EnergyBlocks.TileEntityTransformer;
 import com.example.examplemod.machines.BlastFurnace.ContainerBlastFurnace;
 import com.example.examplemod.machines.BlastFurnace.GuiBlastFurnace;
 import com.example.examplemod.machines.BlastFurnace.TileEntityBlastFurnace;
@@ -23,6 +25,9 @@ public class GuiHandler implements IGuiHandler {
         }
         if (ID == 2 && te instanceof TileEntityEnergyStorage) {
             return new ContainerEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
+        }
+        if (ID == 3) {
+            return new ContainerTransformer(player.inventory, (TileEntityTransformer) te);
         }
         return null;
     }
