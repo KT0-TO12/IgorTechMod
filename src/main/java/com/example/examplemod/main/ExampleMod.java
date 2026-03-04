@@ -62,12 +62,6 @@ import static com.example.examplemod.main.EcompItems.*;
 @Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 @Mod.EventBusSubscriber
 public class ExampleMod {
-    public static Item TITANIUM_INGOT;
-    public static Item URANIUM_INGOT;
-    public static Item STEEL_INGOT;
-    public static Item SILICON_PURE;
-    public static Item DOG_ARMOR;
-    public static Item ITEM_STATUE;
     public static SimpleNetworkWrapper network;
     public static Item INFINITE_BATTERY;
     public static final String examplemod = "examplemod";
@@ -80,17 +74,16 @@ public class ExampleMod {
     public static final CreativeTabs MOD_TAB = new CreativeTabs("tab_pespatron") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(DOG_ARMOR);
+            return new ItemStack(EcompItems.DOG_ARMOR);
         }
     };
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-        STEEL_INGOT = EcompItems.STEEL_INGOT;
-        SILICON_PURE = EcompItems.SILICON_PURE;
-        URANIUM_INGOT  = EcompItems.URANIUM_INGOT;
-        TITANIUM_INGOT = EcompItems.TITANIUM_INGOT;
+
+        // УДАЛЕНО: Лишние присваивания (STEEL_INGOT = ...), так как они теперь в EcompItems
+
         GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(examplemod, "tile_cable"));
         GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation(examplemod, "tile_transformer"));
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
@@ -118,20 +111,16 @@ public class ExampleMod {
     @CapabilityInject(IIEStorage.class)
     public static Capability<IIEStorage> IE_ENERGY = null;
 
-
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        // Рецепты вызываем ТОЛЬКО ТУТ
         ModRecipes.init();
-
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
 
-        // Регистрация в OreDictionary
-        if(STEEL_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel", STEEL_INGOT);
-        if(TITANIUM_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", TITANIUM_INGOT);
-        if(URANIUM_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium", URANIUM_INGOT);
+        // Использование EcompItems для регистрации в OreDictionary
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel", EcompItems.STEEL_INGOT);
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", EcompItems.TITANIUM_INGOT);
+        net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium", EcompItems.URANIUM_INGOT);
     }
-
 
     @SideOnly(Side.CLIENT)
     private void registerDogLayer() {
@@ -139,10 +128,9 @@ public class ExampleMod {
         if (render != null) render.addLayer(new LayerDogArmor(render));
     }
 
-
     @SideOnly(Side.CLIENT)
     private static void initClientRenders() {
-        ITEM_STATUE.setTileEntityItemStackRenderer(new RenderStatueItem());
+        EcompItems.ITEM_STATUE.setTileEntityItemStackRenderer(new RenderStatueItem());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStatue.class, new RenderStatueBlock());
     }
 
@@ -150,7 +138,7 @@ public class ExampleMod {
     public static void onInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getTarget() instanceof EntityWolf) {
             EntityWolf wolf = (EntityWolf) event.getTarget();
-            if (wolf.isTamed() && event.getItemStack().getItem() == DOG_ARMOR) {
+            if (wolf.isTamed() && event.getItemStack().getItem() == EcompItems.DOG_ARMOR) {
                 if (!wolf.getEntityData().getBoolean("has_dog_armor")) {
                     wolf.getEntityData().setBoolean("has_dog_armor", true);
                     if (!event.getEntityPlayer().capabilities.isCreativeMode) event.getItemStack().shrink(1);
@@ -160,6 +148,7 @@ public class ExampleMod {
             }
         }
     }
+
 
     public static class ItemInfiniteBattery extends Item {
 

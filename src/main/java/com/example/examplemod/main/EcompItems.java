@@ -66,11 +66,12 @@ public class EcompItems {
     public static final Item SILICON_PLATE_WITH_100m_TR = reg("silicon_plate_100m_tr");
     public static final Item SILICON_PLATE_WITH_500m_TR = reg("silicon_plate_500m_tr");
     public static final Item SILICON_PLATE_WITH_1b_TR = reg("silicon_plate_1b_tr");
-
     // СМД И СНАРЯЖЕНИЕ
     public static final Item SMD_TRANZISTOR_ECOMP = reg("smd_tranzistor_ecomp");
     public static final Item SMD_RESISTOR_ECOMP = reg("smd_resistor_ecomp");
     public static final Item SMD_CAPACITOR_ECOMP = reg("smd_capacitor_ecomp");
+    public static final Item DOG_ARMOR = reg("dog_armor");
+    public static final Item ITEM_STATUE = reg("item_statue");
     public static final Item STEEL_INGOT = reg("steel_ingot");
     public static final Item TITANIUM_INGOT = reg("titanium_ingot");
     public static final Item URANIUM_INGOT = reg("uranium_ingot");

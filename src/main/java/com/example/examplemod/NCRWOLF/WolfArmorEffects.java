@@ -59,15 +59,16 @@ public class WolfArmorEffects {
     private static void applyAttributes(EntityWolf wolf) {
         IAttributeInstance maxHealth = wolf.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
         if (maxHealth.getModifier(HEALTH_UUID) == null) {
-            maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 3.5D, 3));
+            maxHealth.applyModifier(new AttributeModifier(HEALTH_UUID, "Armor Health Boost", 8.0D, 0));
             wolf.setHealth(wolf.getMaxHealth());
         }
 
         IAttributeInstance attackDamage = wolf.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         if (attackDamage != null && attackDamage.getModifier(DAMAGE_UUID) == null) {
-            attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 3.5D, 3));
+            attackDamage.applyModifier(new AttributeModifier(DAMAGE_UUID, "Armor Damage Boost", 6.0D, 0));
         }
     }
+
 
     private static void removeAttributes(EntityWolf wolf) {
         IAttributeInstance maxHealth = wolf.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);

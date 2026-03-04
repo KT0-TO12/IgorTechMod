@@ -105,10 +105,10 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
 
     private ItemStack getResult(ItemStack input) {
         if (input.getItem() == Items.IRON_INGOT) {
-            return new ItemStack(ExampleMod.STEEL_INGOT);
+            return new ItemStack(EcompItems.STEEL_INGOT);
         }
         if (Block.getBlockFromItem(input.getItem()) == ModBlocks.BAKHMUTIUM_ORE) {
-            return new ItemStack(ExampleMod.SILICON_PURE);
+            return new ItemStack(EcompItems.SILICON_PURE);
         }
         return ItemStack.EMPTY;
     }
