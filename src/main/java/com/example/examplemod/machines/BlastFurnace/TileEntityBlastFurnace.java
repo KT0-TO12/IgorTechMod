@@ -1,7 +1,9 @@
 package com.example.examplemod.machines.BlastFurnace;
 
 import com.example.examplemod.main.ExampleMod;
+import com.example.examplemod.main.ModBlocks;
 import com.example.examplemod.IFE.IEStorage;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -15,9 +17,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
+import com.example.examplemod.main.EcompItems;
 
 import javax.annotation.Nullable;
 
@@ -31,7 +35,8 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     @Override
     public void update() {
         if (this.world.isRemote) return;
-        ItemStack fuelStack = inventory.get(1);
+
+        ItemStack fuelStack = inventory.get(5);
         if (!fuelStack.isEmpty() && fuelStack.getItem() == ExampleMod.INFINITE_BATTERY) {
             if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
                 batteryTimer++;
@@ -54,6 +59,7 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
                 }
             }
         }
+
         if (energyStorage.getEnergyStored() >= 1 && canSmelt()) {
             cookTime++;
             if (cookTime >= totalCookTime) {
@@ -70,35 +76,40 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     }
 
     private boolean canSmelt() {
-        ItemStack iron = findInputStack(Items.IRON_INGOT);
-        ItemStack coalReagent = findInputStack(Items.COAL);
+        ItemStack input = inventory.get(0);
+        ItemStack coalReagent = inventory.get(2);
         ItemStack output = inventory.get(3);
-        if (iron.isEmpty() || coalReagent.isEmpty()) return false;
-        ItemStack result = new ItemStack(ExampleMod.STEEL_INGOT);
+
+        if (input.isEmpty() || coalReagent.isEmpty() || coalReagent.getItem() != Items.COAL) return false;
+
+        ItemStack result = getResult(input);
+        if (result.isEmpty()) return false;
+
         if (output.isEmpty()) return true;
         if (!output.isItemEqual(result)) return false;
         return (output.getCount() + result.getCount() <= getInventoryStackLimit());
     }
 
     private void smeltItem() {
-        //рецет 1
-        ItemStack flint = findInputStack(Items.FLINT);
-        ItemStack Reagent = findInputStack(Items.WATER_BUCKET);
-        //рецепт 2
-        ItemStack iron = findInputStack(Items.IRON_INGOT);
-        ItemStack coalReagent = findInputStack(Items.COAL);
-        ItemStack result = new ItemStack(ExampleMod.STEEL_INGOT);
-        if (!iron.isEmpty() && !coalReagent.isEmpty()) {
-            iron.shrink(1);
+        ItemStack input = inventory.get(0);
+        ItemStack coalReagent = inventory.get(2);
+        ItemStack result = getResult(input);
+
+        if (!result.isEmpty()) {
+            input.shrink(1);
             coalReagent.shrink(1);
             if (inventory.get(3).isEmpty()) inventory.set(3, result.copy());
-            else inventory.get(3).grow(1);
+            else inventory.get(3).grow(result.getCount());
         }
     }
 
-    private ItemStack findInputStack(Item item) {
-        if (inventory.get(0).getItem() == item) return inventory.get(0);
-        if (inventory.get(2).getItem() == item) return inventory.get(2);
+    private ItemStack getResult(ItemStack input) {
+        if (input.getItem() == Items.IRON_INGOT) {
+            return new ItemStack(ExampleMod.STEEL_INGOT);
+        }
+        if (Block.getBlockFromItem(input.getItem()) == ModBlocks.BAKHMUTIUM_ORE) {
+            return new ItemStack(ExampleMod.SILICON_PURE);
+        }
         return ItemStack.EMPTY;
     }
 

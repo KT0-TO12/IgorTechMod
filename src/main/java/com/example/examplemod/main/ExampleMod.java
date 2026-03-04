@@ -57,10 +57,17 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import static com.example.examplemod.main.EcompItems.*;
+
 @Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 @Mod.EventBusSubscriber
 public class ExampleMod {
-
+    public static Item TITANIUM_INGOT;
+    public static Item URANIUM_INGOT;
+    public static Item STEEL_INGOT;
+    public static Item SILICON_PURE;
+    public static Item DOG_ARMOR;
+    public static Item ITEM_STATUE;
     public static SimpleNetworkWrapper network;
     public static Item INFINITE_BATTERY;
     public static final String examplemod = "examplemod";
@@ -76,77 +83,20 @@ public class ExampleMod {
             return new ItemStack(DOG_ARMOR);
         }
     };
-    public static Item bakhmutium_ingot;
-    //электроника
-    //базы
-    public static Item MICROCONTROLLER_BASE_ECOMP;
-    public static Item MICROCHIP_BASE_ECOMP;
-    public static Item ADVANCED_MICROCHIP_BASE_ECOMP;
-    public static Item SMD_BASE_ECOMP;
-    //основа
-    public static Item SILICON_PLATE_ECOMP;
-    public static Item TRANZISTOR_ECOMP;
-    public static Item VACUM_TUBE_ECOMP;
-    public static Item COPPER_PLATE_ECOMP;
-    public static Item TEXTOLITE_PLATE_ECOMP;
-    public static Item CAPACITOR_ECOMP;
-    public static Item RESISTOR_ECOMP;
-
-    //микрочипы и микроконтроллеры
-    public static Item MICROCHIP_100k_ECOMP;
-    public static Item MICROCHIP_500k_ECOMP;
-    public static Item MICROCHIP_1m_ECOMP;
-    public static Item MICROCHIP_10m_ECOMP;
-    //продвинутые чипы от 100m
-    public static Item MICROCHIP_ADVANCED_100m_ECOMP;
-    public static Item MICROCHIP_ADVANCED_500m_ECOMP;
-    public static Item MICROCHIP_ADVANCED_1b_ECOMP;
-    //пластины
-    public static Item SILICON_PLATE_WITH_1_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_5_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_10_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_50_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_100_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_500_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_1k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_5k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_10k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_50k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_100k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_500k_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_1m_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_10m_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_100m_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_500m_TRANZISTORS_ECOMP;
-    public static Item SILICON_PLATE_WITH_1b_TRANZISTORS_ECOMP;
-    //СМД
-    public static Item SMD_TRANZISTOR_ECOMP;
-    public static Item SMD_RESISTOR_ECOMP;
-    public static Item SMD_CAPACITOR_ECOMP;
-    //платы и схемы
-    public static Item VACUM_TUBE_PLATE_ECOMP;
-    public static Item INEGRAL_ECOMP;
-    public static Item CAPACITOR_PLATE_ECOMP;
-    //другое
-    public static Item STEEL_INGOT;
-    public static Item TITANIUM_INGOT;
-    public static Item URANIUM_INGOT;
-    public static Item GAS_FILTER;
-    public static Item ARMOR_PLATE;
-    public static Item DOG_HELMET;
-    public static Item DOG_CHESTPLATE;
-    public static Item DOG_TAIL;
-    public static Item DOG_ARMOR;
-    public static Block STATUE_BLOCK;
-    public static Block STATUE_BLOCK_2;
-    public static Item ITEM_STATUE;
-
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation("examplemod", "tile_cable"));
-        GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation("examplemod", "tile_transformer"));
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        STEEL_INGOT = EcompItems.STEEL_INGOT;
+        SILICON_PURE = EcompItems.SILICON_PURE;
+        URANIUM_INGOT  = EcompItems.URANIUM_INGOT;
+        TITANIUM_INGOT = EcompItems.TITANIUM_INGOT;
+        GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(examplemod, "tile_cable"));
+        GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation(examplemod, "tile_transformer"));
+        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
+        GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, new ResourceLocation(examplemod, "energy_storage"));
+        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(examplemod, "statue_tile"));
+
         CapabilityManager.INSTANCE.register(IIEStorage.class, new Capability.IStorage<IIEStorage>() {
             @Override
             public net.minecraft.nbt.NBTBase writeNBT(Capability<IIEStorage> capability, IIEStorage instance, EnumFacing side) {
@@ -160,40 +110,28 @@ public class ExampleMod {
             }
         }, () -> new IEStorage(1000));
 
-        GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
-        GameRegistry.registerTileEntity(TileEntityEnergyStorage.class, new ResourceLocation(examplemod, "energy_storage"));
-        GameRegistry.registerTileEntity(TileEntityStatue.class, new ResourceLocation(examplemod, "statue_tile"));
-
         if (event.getSide().isClient()) {
             DiscordManager.start();
         }
     }
 
-    //init
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-        ModRecipes.init();
-
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-        GameRegistry.registerWorldGenerator(new OreGen(), 0);
-        net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel",STEEL_INGOT);
-        net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium",TITANIUM_INGOT);
-        net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium",URANIUM_INGOT);
-    }
     @CapabilityInject(IIEStorage.class)
     public static Capability<IIEStorage> IE_ENERGY = null;
-    @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-        System.out.println("ZOV Mod: Post-Initialization завершена.");
-    }
+
 
     @Mod.EventHandler
-    public void stop(FMLServerStoppingEvent event) {
-        if (event.getSide().isClient()) {
-            DiscordManager.stop();
-            System.out.println("Discord RPC успешно остановлен.");
-        }
+    public void init(FMLInitializationEvent event) {
+        // Рецепты вызываем ТОЛЬКО ТУТ
+        ModRecipes.init();
+
+        GameRegistry.registerWorldGenerator(new OreGen(), 0);
+
+        // Регистрация в OreDictionary
+        if(STEEL_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel", STEEL_INGOT);
+        if(TITANIUM_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", TITANIUM_INGOT);
+        if(URANIUM_INGOT != null) net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium", URANIUM_INGOT);
     }
+
 
     @SideOnly(Side.CLIENT)
     private void registerDogLayer() {

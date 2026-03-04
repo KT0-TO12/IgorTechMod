@@ -35,11 +35,10 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = ExampleMod.examplemod)
 public class ModBlocks {
 
-    // 1. ОБЪЯВЛЕНИЕ БЛОКОВ
+    public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage").setCreativeTab(ExampleMod.MOD_TAB);
     public static final Block BLAST_FURNACE = new BlockBlastFurnace().setCreativeTab(ExampleMod.MOD_TAB);
     public static final Block CABLE_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockCable("cable_eblock").setCreativeTab(ExampleMod.MOD_TAB);
     public static final Block TRANSFORMATOR_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockTransformer("transformer_eblock").setCreativeTab(ExampleMod.MOD_TAB);
-    public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage");
 
     public static final Block BAKHMUTIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("bakhmutium_ore").setUnlocalizedName("bakhmutium_ore")
@@ -55,33 +54,31 @@ public class ModBlocks {
 
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
 
-    // 2. РЕГИСТРАЦИЯ БЛОКОВ
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
+        r.register(ENERGY_STORAGE);
         r.register(CABLE_EBLOCK);
         r.register(TRANSFORMATOR_EBLOCK);
         r.register(BLAST_FURNACE);
-        r.register(ENERGY_STORAGE);
         r.register(BAKHMUTIUM_ORE);
         r.register(URANIUM_ORE);
         r.register(TITANIUM_ORE);
         r.register(STATUE_BLOCK);
     }
 
-    // 3. РЕГИСТРАЦИЯ ITEMBLOCKS (Предметы для блоков)
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> r = event.getRegistry();
 
-        r.register(new ItemBlock(BLAST_FURNACE).setRegistryName(BLAST_FURNACE.getRegistryName()));
         r.register(new ItemBlock(ENERGY_STORAGE).setRegistryName(ENERGY_STORAGE.getRegistryName()));
+        r.register(new ItemBlock(BLAST_FURNACE).setRegistryName(BLAST_FURNACE.getRegistryName()));
         r.register(new ItemBlock(BAKHMUTIUM_ORE).setRegistryName(BAKHMUTIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(URANIUM_ORE).setRegistryName(URANIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(CABLE_EBLOCK).setRegistryName(CABLE_EBLOCK.getRegistryName()));
         r.register(new ItemBlock(TRANSFORMATOR_EBLOCK).setRegistryName(TRANSFORMATOR_EBLOCK.getRegistryName()));
-        // Специальный ItemBlock для статуи с описанием
+
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
             @SideOnly(Side.CLIENT)
@@ -98,34 +95,22 @@ public class ModBlocks {
         r.register(itemStatue.setRegistryName(STATUE_BLOCK.getRegistryName()));
     }
 
-    // 4. РЕГИСТРАЦИЯ МОДЕЛЕЙ
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        // Модели блоков
-        registerModel(BLAST_FURNACE);
-        // registerModel();
         registerModel(ENERGY_STORAGE);
+        registerModel(BLAST_FURNACE);
         registerModel(BAKHMUTIUM_ORE);
         registerModel(URANIUM_ORE);
         registerModel(TITANIUM_ORE);
         registerModel(STATUE_BLOCK);
-
-
-        registerItemModel(ExampleMod.URANIUM_INGOT);
-        registerItemModel(ExampleMod.TITANIUM_INGOT);
-        registerItemModel(ExampleMod.bakhmutium_ingot);
-        registerItemModel(ExampleMod.GAS_FILTER);
-        registerItemModel(ExampleMod.ARMOR_PLATE);
-        registerItemModel(ExampleMod.DOG_ARMOR);
-        registerItemModel(ExampleMod.INFINITE_BATTERY);
-        registerItemModel(ExampleMod.DOG_HELMET);
-        registerItemModel(ExampleMod.DOG_CHESTPLATE);
-        registerItemModel(ExampleMod.DOG_TAIL);
+        registerModel(CABLE_EBLOCK);
+        registerModel(TRANSFORMATOR_EBLOCK);
     }
 
     @SideOnly(Side.CLIENT)
     private static void registerModel(Block block) {
+        net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(new ModelMapper());
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
@@ -138,7 +123,6 @@ public class ModBlocks {
         }
     }
 
-    // ВНУТРЕННИЙ КЛАСС СТАТУИ
     public static class BlockStatueCustom extends Block {
         protected static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.9D, 0.8D);
 
@@ -157,7 +141,7 @@ public class ModBlocks {
 
         @Nullable
         @Override public TileEntity createTileEntity(World w, IBlockState s) {
-            return new TileEntityStatue(); // Теперь берется из отдельного файла
+            return new TileEntityStatue();
         }
     }
 }

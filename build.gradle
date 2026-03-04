@@ -1,12 +1,12 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://plugins.gradle.org/m2/' }
         mavenCentral()
+        maven { url = "https://repo.maven.apache.org" }
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        maven { url = 'https://maven.minecraftforge.net/' }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
-        // Плагин для вшивания библиотек
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
@@ -22,13 +22,14 @@ archivesBaseName = 'modid'
 
 sourceCompatibility = targetCompatibility = '1.8'
 
-// Создаем конфигурацию shadow, чтобы плагин знал, что паковать
 configurations {
     shadow
     implementation.extendsFrom(shadow)
 }
 
 minecraft {
+    // Если на этой версии будет ошибка Patcher Dependency,
+    // попробуй поменять mappings на channel: 'stable', version: '39-1.12'
     mappings channel: 'snapshot', version: '20171003-1.12'
 
     runs {
@@ -47,35 +48,27 @@ minecraft {
 repositories {
     maven { url 'https://jitpack.io' }
     mavenCentral()
+    maven { url = 'https://maven.minecraftforge.net/' }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
-
-    // Библиотека Discord теперь помечена как 'shadow'
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860:userdev'
     shadow 'com.github.Vatuu:discord-rpc:1.6.2'
 }
 
 shadowJar {
-    // Указываем использовать нашу конфигурацию shadow
     configurations = [project.configurations.shadow]
-
-    // Удаляем лишнее, чтобы Forge не ругался на "битый архив"
     exclude 'module-info.class'
     exclude 'META-INF/versions/**'
     exclude 'META-INF/maven/**'
     exclude 'META-INF/proguard/**'
-
-    // Делаем этот файл основным
     classifier = ''
 }
 
-// Переобфускация именно для shadowJar (обязательно для работы в лаунчере)
 reobf {
     shadowJar { }
 }
 
-// Связываем процессы сборки
 jar.finalizedBy('reobfJar')
 build.dependsOn shadowJar
 
