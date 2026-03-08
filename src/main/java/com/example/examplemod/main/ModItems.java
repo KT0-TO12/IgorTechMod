@@ -18,12 +18,10 @@ public class ModItems {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
 
-        // Если это БЛОК (как первая статуя), регистрируем его через ItemBlock
         if (STATUE_BLOCK instanceof Block) {
             registerItemBlock(registry, (Block) STATUE_BLOCK);
         }
 
-        // Если это ПРЕДМЕТ (как вторая статуя), регистрируем его просто как Item
         if (STATUE_BLOCK_2 instanceof Item) {
             registry.register((Item) STATUE_BLOCK_2);
         }
