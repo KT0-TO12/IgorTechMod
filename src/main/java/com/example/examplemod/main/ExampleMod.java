@@ -1,5 +1,7 @@
 package com.example.examplemod.main;
 
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import com.example.examplemod.EnergyBlocks.TileEntityCable;
 import com.example.examplemod.EnergyBlocks.TileEntityTransformer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -22,9 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -33,9 +33,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
@@ -56,12 +53,15 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-
 import static com.example.examplemod.main.EcompItems.*;
 
 @Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
-@Mod.EventBusSubscriber
 public class ExampleMod {
+    @SidedProxy(
+            clientSide = "com.example.examplemod.main.ClientProxy",
+            serverSide = "com.example.examplemod.main.CommonProxy"
+    )
+    public static com.example.examplemod.main.CommonProxy proxy;
     public static SimpleNetworkWrapper network;
     public static Item INFINITE_BATTERY;
     public static final String examplemod = "examplemod";
@@ -80,10 +80,9 @@ public class ExampleMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        proxy.preInit(event);
+        ModRecipes.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-
-        // УДАЛЕНО: Лишние присваивания (STEEL_INGOT = ...), так как они теперь в EcompItems
-
         GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(examplemod, "tile_cable"));
         GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation(examplemod, "tile_transformer"));
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));
@@ -95,6 +94,7 @@ public class ExampleMod {
             public net.minecraft.nbt.NBTBase writeNBT(Capability<IIEStorage> capability, IIEStorage instance, EnumFacing side) {
                 return new net.minecraft.nbt.NBTTagInt(instance.getEnergyStored());
             }
+
             @Override
             public void readNBT(Capability<IIEStorage> capability, IIEStorage instance, EnumFacing side, net.minecraft.nbt.NBTBase nbt) {
                 if (instance instanceof IEStorage) {
@@ -115,8 +115,6 @@ public class ExampleMod {
     public void init(FMLInitializationEvent event) {
         ModRecipes.init();
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
-
-        // Использование EcompItems для регистрации в OreDictionary
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel", EcompItems.STEEL_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", EcompItems.TITANIUM_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotUranium", EcompItems.URANIUM_INGOT);
@@ -148,33 +146,7 @@ public class ExampleMod {
             }
         }
     }
-
-
-    public static class ItemInfiniteBattery extends Item {
-
-        public ItemInfiniteBattery() {
-            setUnlocalizedName("infinite_battery");
-            setRegistryName("infinite_battery");
-            setCreativeTab(ExampleMod.MOD_TAB);
-            setMaxStackSize(1);
-        }
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
-            tooltip.add(TextFormatting.GRAY + "мини-реактор на америции-242");
-
-            if (GuiScreen.isShiftKeyDown()) {
-                tooltip.add(TextFormatting.RED + "ТОНИ СТАРК СОБРАЛ МИНИ РЕАКТОР СИДЯ В ЯМЕ!ИЗ МЕТАЛОЛОМА!");
-            } else {
-                tooltip.add(TextFormatting.DARK_GRAY + "Нажми " + TextFormatting.AQUA + "Shift" + TextFormatting.DARK_GRAY + " для инфо");
-
-            }
-        }
-    }
 }
-
 class BlockStatue extends Block {
     protected static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.3D, 0.0D, 0.3D, 0.7D, 0.5D, 0.7D);
     public BlockStatue(String name) {

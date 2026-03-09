@@ -9,9 +9,6 @@ import com.example.examplemod.machines.BlastFurnace.TileEntityBlastFurnace;
 import com.example.examplemod.machines.EnergyStorage.ContainerEnergyStorage;
 import com.example.examplemod.machines.EnergyStorage.GuiEnergyStorage;
 import com.example.examplemod.machines.EnergyStorage.TileEntityEnergyStorage;
-import com.example.examplemod.machines.Chip_Furnace.ContainerKiln;
-import com.example.examplemod.machines.Chip_Furnace.GuiKiln;
-import com.example.examplemod.machines.Chip_Furnace.TileEntityKiln;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -33,9 +30,6 @@ public class GuiHandler implements IGuiHandler {
         if (ID == 3 && te instanceof TileEntityTransformer) {
             return new ContainerTransformer(player.inventory, (TileEntityTransformer) te);
         }
-        if (ID == 4 && te instanceof TileEntityKiln) {
-            return new ContainerKiln(player.inventory, (TileEntityKiln) te);
-        }
         return null;
     }
 
@@ -51,9 +45,6 @@ public class GuiHandler implements IGuiHandler {
         }
         if (ID == 3 && te instanceof TileEntityTransformer) {
             return new GuiTransformer(player.inventory, (TileEntityTransformer) te);
-        }
-        if (ID == 4 && te instanceof TileEntityKiln) {
-            return new GuiKiln(player.inventory, (TileEntityKiln) te);
         }
         return null;
     }

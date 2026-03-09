@@ -15,6 +15,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -22,6 +23,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,14 +59,7 @@ public class ModBlocks {
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
-        r.register(ENERGY_STORAGE);
-        r.register(CABLE_EBLOCK);
-        r.register(TRANSFORMATOR_EBLOCK);
-        r.register(BLAST_FURNACE);
-        r.register(BAKHMUTIUM_ORE);
-        r.register(URANIUM_ORE);
-        r.register(TITANIUM_ORE);
-        r.register(STATUE_BLOCK);
+        r.registerAll(ENERGY_STORAGE, CABLE_EBLOCK, TRANSFORMATOR_EBLOCK, BLAST_FURNACE, BAKHMUTIUM_ORE, URANIUM_ORE, TITANIUM_ORE, STATUE_BLOCK);
     }
 
     @SubscribeEvent
@@ -79,6 +74,7 @@ public class ModBlocks {
         r.register(new ItemBlock(CABLE_EBLOCK).setRegistryName(CABLE_EBLOCK.getRegistryName()));
         r.register(new ItemBlock(TRANSFORMATOR_EBLOCK).setRegistryName(TRANSFORMATOR_EBLOCK.getRegistryName()));
 
+        // Специальная регистрация для стака статуи с описанием
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
             @SideOnly(Side.CLIENT)
@@ -98,29 +94,24 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        registerModel(ENERGY_STORAGE);
-        registerModel(BLAST_FURNACE);
-        registerModel(BAKHMUTIUM_ORE);
-        registerModel(URANIUM_ORE);
-        registerModel(TITANIUM_ORE);
-        registerModel(STATUE_BLOCK);
-        registerModel(CABLE_EBLOCK);
-        registerModel(TRANSFORMATOR_EBLOCK);
+        // РЕГИСТРИРУЕМ ЛОАДЕР ТОЛЬКО ОДИН РАЗ ЗДЕСЬ
+        ModelLoaderRegistry.registerLoader(new EcompItems.ModelMapper());
+
+        // Регистрируем модели для всех блоков
+        registerBlockModel(ENERGY_STORAGE);
+        registerBlockModel(BLAST_FURNACE);
+        registerBlockModel(BAKHMUTIUM_ORE);
+        registerBlockModel(URANIUM_ORE);
+        registerBlockModel(TITANIUM_ORE);
+        registerBlockModel(STATUE_BLOCK);
+        registerBlockModel(CABLE_EBLOCK);
+        registerBlockModel(TRANSFORMATOR_EBLOCK);
     }
 
     @SideOnly(Side.CLIENT)
-    private static void registerModel(Block block) {
-        net.minecraftforge.client.model.ModelLoaderRegistry.registerLoader(new ModelMapper());
+    private static void registerBlockModel(Block block) {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
-    }
-
-    @SideOnly(Side.CLIENT)
-    private static void registerItemModel(Item item) {
-        if (item != null && item.getRegistryName() != null) {
-            ModelLoader.setCustomModelResourceLocation(item, 0,
-                    new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        }
     }
 
     public static class BlockStatueCustom extends Block {

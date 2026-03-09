@@ -22,64 +22,44 @@ public class EcompItems {
 
     public static final List<Item> ITEMS = new ArrayList<>();
 
-    // ЭЛЕКТРОНИКА (БАЗЫ)
-    public static final Item TRANZISTOR_BASE_ECOMP = reg("tranzistor_base_ecomp");
-    public static final Item MICROCONTROLLER_BASE_ECOMP = reg("microcontroller_base_ecomp");
-    public static final Item MICROCHIP_BASE_ECOMP = reg("microchip_base_ecomp");
-    public static final Item ADVANCED_MICROCHIP_BASE_ECOMP = reg("advanced_microchip_base_ecomp");
-    public static final Item SMD_BASE_ECOMP = reg("smd_base_ecomp");
-
+    // ЭЛЕКТРОНИКА
+    public static final Item TRANZISTOR_BASE_ECOMP = reg("tranzistor");
+    public static final Item MICROCONTROLLER_BASE_ECOMP = reg("microcontrollerbase");
+    public static final Item MICROCHIP_BASE_ECOMP = reg("microchipbase");
+    public static final Item ADVANCED_MICROCHIP_BASE_ECOMP = reg("advancedmicrochipbase");
+    public static final Item SMD_BASE_ECOMP = reg("smdbase");
+    //оружие :)
+    public static final Item SVAGAMET = reg("svagamet");
     // ОСНОВА
     public static final Item SILICON_PURE = reg("silicon_pure");
+    public static final Item CAPACITOR_ECOMP = reg("capacitor");
+    public static final Item RESISTOR_ECOMP = reg("resistor");
+    public static final Item VACUM_TUBE_ECOMP = reg("vacum_tube");
+    public static final Item INFINITE_BATTERY = reg("infinite_battery");
+
+    // СНАРЯЖЕНИЕ
+    public static final Item DOG_ARMOR = reg("new_dog_armor");
+    public static final Item DOG_HELMET = reg("new_dog_helmet");
+    public static final Item DOG_CHESTPLATE = reg("new_dog_chestplate");
+    public static final Item DOG_TAIL = reg("new_dog_tail");
+    public static final Item GAS_FILTER = reg("new_gas_filter");
+    public static final Item ARMOR_PLATE = reg("new_armor_plate");
+
+    // МЕТАЛЛЫ И СТАТУЯ
+    public static final Item STEEL_INGOT = reg("steel_ingot");
+    public static final Item TITANIUM_INGOT = reg("new_titanium_ingot");
+    public static final Item BAKHMUTIUM_INGOT = reg("bakhmutium_ingot");
+    public static final Item URANIUM_INGOT = reg("uranium_ingot");
+    public static final Item ITEM_STATUE = reg("item_statue");
+
+    // Прочие
     public static final Item SILICON_PLATE_ECOMP = reg("silicon_plate_ecomp");
     public static final Item TRANZISTOR_ECOMP = reg("tranzistor_ecomp");
-    public static final Item VACUM_TUBE_ECOMP = reg("vacum_tube_ecomp");
     public static final Item COPPER_PLATE_ECOMP = reg("copper_plate_ecomp");
     public static final Item TEXTOLITE_PLATE_ECOMP = reg("textolite_plate_ecomp");
-    public static final Item CAPACITOR_ECOMP = reg("capacitor_ecomp");
-    public static final Item RESISTOR_ECOMP = reg("resistor_ecomp");
-
-    // ЧИПЫ
-    public static final Item MICROCHIP_100k_ECOMP = reg("microchip_100k_ecomp");
-    public static final Item MICROCHIP_500k_ECOMP = reg("microchip_500k_ecomp");
-    public static final Item MICROCHIP_1m_ECOMP = reg("microchip_1m_ecomp");
-    public static final Item MICROCHIP_10m_ECOMP = reg("microchip_10m_ecomp");
-    public static final Item MICROCHIP_ADVANCED_100m_ECOMP = reg("microchip_advanced_100m_ecomp");
-    public static final Item MICROCHIP_ADVANCED_500m_ECOMP = reg("microchip_advanced_500m_ecomp");
-    public static final Item MICROCHIP_ADVANCED_1b_ECOMP = reg("microchip_advanced_1b_ecomp");
-
-    // ПЛАСТИНЫ С ТРАНЗИСТОРАМИ
-    public static final Item SILICON_PLATE_WITH_1_TR = reg("silicon_plate_1_tr");
-    public static final Item SILICON_PLATE_WITH_5_TR = reg("silicon_plate_5_tr");
-    public static final Item SILICON_PLATE_WITH_10_TR = reg("silicon_plate_10_tr");
-    public static final Item SILICON_PLATE_WITH_50_TR = reg("silicon_plate_50_tr");
-    public static final Item SILICON_PLATE_WITH_100_TR = reg("silicon_plate_100_tr");
-    public static final Item SILICON_PLATE_WITH_500_TR = reg("silicon_plate_500_tr");
-    public static final Item SILICON_PLATE_WITH_1k_TR = reg("silicon_plate_1k_tr");
-    public static final Item SILICON_PLATE_WITH_5k_TR = reg("silicon_plate_5k_tr");
-    public static final Item SILICON_PLATE_WITH_10k_TR = reg("silicon_plate_10k_tr");
-    public static final Item SILICON_PLATE_WITH_50k_TR = reg("silicon_plate_50k_tr");
-    public static final Item SILICON_PLATE_WITH_100k_TR = reg("silicon_plate_100k_tr");
-    public static final Item SILICON_PLATE_WITH_500k_TR = reg("silicon_plate_500k_tr");
-    public static final Item SILICON_PLATE_WITH_1m_TR = reg("silicon_plate_1m_tr");
-    public static final Item SILICON_PLATE_WITH_10m_TR = reg("silicon_plate_10m_tr");
-    public static final Item SILICON_PLATE_WITH_100m_TR = reg("silicon_plate_100m_tr");
-    public static final Item SILICON_PLATE_WITH_500m_TR = reg("silicon_plate_500m_tr");
-    public static final Item SILICON_PLATE_WITH_1b_TR = reg("silicon_plate_1b_tr");
-    // СМД И СНАРЯЖЕНИЕ
-    public static final Item SMD_TRANZISTOR_ECOMP = reg("smd_tranzistor_ecomp");
-    public static final Item SMD_RESISTOR_ECOMP = reg("smd_resistor_ecomp");
-    public static final Item SMD_CAPACITOR_ECOMP = reg("smd_capacitor_ecomp");
-    public static final Item DOG_ARMOR = reg("dog_armor");
-    public static final Item ITEM_STATUE = reg("item_statue");
-    public static final Item STEEL_INGOT = reg("steel_ingot");
-    public static final Item TITANIUM_INGOT = reg("titanium_ingot");
-    public static final Item URANIUM_INGOT = reg("uranium_ingot");
-    public static final Item INFINITE_BATTERY = reg("infinite_battery");
-    public static final Item STATUE_BLOCK_2 = reg("statue_block_2");
 
     private static Item reg(String name) {
-        Item item = new Item().setRegistryName(name).setUnlocalizedName(name).setCreativeTab(ExampleMod.MOD_TAB);
+        Item item = new Item().setRegistryName(ExampleMod.examplemod, name).setUnlocalizedName(name).setCreativeTab(ExampleMod.MOD_TAB);
         ITEMS.add(item);
         return item;
     }
