@@ -1,18 +1,15 @@
 package com.example.examplemod.main;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +25,10 @@ public class EcompItems {
     public static final Item MICROCHIP_BASE_ECOMP = reg("microchipbase");
     public static final Item ADVANCED_MICROCHIP_BASE_ECOMP = reg("advancedmicrochipbase");
     public static final Item SMD_BASE_ECOMP = reg("smdbase");
-    //оружие :)
+
+    // ОРУЖИЕ
     public static final Item SVAGAMET = reg("svagamet");
+
     // ОСНОВА
     public static final Item SILICON_PURE = reg("silicon_pure");
     public static final Item CAPACITOR_ECOMP = reg("capacitor");
@@ -52,14 +51,18 @@ public class EcompItems {
     public static final Item URANIUM_INGOT = reg("uranium_ingot");
     public static final Item ITEM_STATUE = reg("item_statue");
 
-    // Прочие
+    // ПРОЧИЕ
     public static final Item SILICON_PLATE_ECOMP = reg("silicon_plate_ecomp");
     public static final Item TRANZISTOR_ECOMP = reg("tranzistor_ecomp");
     public static final Item COPPER_PLATE_ECOMP = reg("copper_plate_ecomp");
     public static final Item TEXTOLITE_PLATE_ECOMP = reg("textolite_plate_ecomp");
 
     private static Item reg(String name) {
-        Item item = new Item().setRegistryName(ExampleMod.examplemod, name).setUnlocalizedName(name).setCreativeTab(ExampleMod.MOD_TAB);
+        // Убедись, что ExampleMod.examplemod возвращает "examplemod" (маленькими буквами!)
+        Item item = new Item()
+                .setRegistryName(ExampleMod.examplemod, name)
+                .setUnlocalizedName(ExampleMod.examplemod + "." + name)
+                .setCreativeTab(ExampleMod.MOD_TAB);
         ITEMS.add(item);
         return item;
     }
@@ -75,29 +78,10 @@ public class EcompItems {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        ModelLoaderRegistry.registerLoader(new ModelMapper());
         for (Item item : ITEMS) {
+            // Регистрация модели: ищет файл в assets/modid/models/item/name.json
             ModelLoader.setCustomModelResourceLocation(item, 0,
                     new ModelResourceLocation(item.getRegistryName(), "inventory"));
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public static class ModelMapper implements ICustomModelLoader {
-        @Override
-        public void onResourceManagerReload(IResourceManager resourceManager) {}
-
-        @Override
-        public boolean accepts(ResourceLocation modelLocation) {
-            return modelLocation.getResourceDomain().equals(ExampleMod.examplemod)
-                    && !modelLocation.getResourcePath().contains("block/");
-        }
-
-        @Override
-        public IModel loadModel(ResourceLocation modelLocation) {
-            String name = modelLocation.getResourcePath();
-            ResourceLocation texture = new ResourceLocation(ExampleMod.examplemod, "items/" + name);
-            return new ItemLayerModel(ImmutableList.of(texture));
         }
     }
 }

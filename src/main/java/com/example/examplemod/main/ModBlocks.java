@@ -73,8 +73,6 @@ public class ModBlocks {
         r.register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(CABLE_EBLOCK).setRegistryName(CABLE_EBLOCK.getRegistryName()));
         r.register(new ItemBlock(TRANSFORMATOR_EBLOCK).setRegistryName(TRANSFORMATOR_EBLOCK.getRegistryName()));
-
-        // Специальная регистрация для стака статуи с описанием
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
             @SideOnly(Side.CLIENT)
@@ -94,10 +92,7 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        // РЕГИСТРИРУЕМ ЛОАДЕР ТОЛЬКО ОДИН РАЗ ЗДЕСЬ
-        ModelLoaderRegistry.registerLoader(new EcompItems.ModelMapper());
 
-        // Регистрируем модели для всех блоков
         registerBlockModel(ENERGY_STORAGE);
         registerBlockModel(BLAST_FURNACE);
         registerBlockModel(BAKHMUTIUM_ORE);
