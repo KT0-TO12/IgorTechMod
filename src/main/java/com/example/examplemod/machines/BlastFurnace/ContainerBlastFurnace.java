@@ -20,7 +20,7 @@ public class ContainerBlastFurnace extends Container {
 
         this.addSlotToContainer(new Slot(tileEntity, 0, 44, 17));
         this.addSlotToContainer(new Slot(tileEntity, 1, 44, 53));
-        this.addSlotToContainer(new Slot(tileEntity, 2, 71, 35));
+        this.addSlotToContainer(new Slot(tileEntity, 4, 71, 35));
         this.addSlotToContainer(new SlotBlastFurnaceOutput(playerInventory.player, tileEntity, 3, 126, 35));
 
         for (int i = 0; i < 3; ++i) {
@@ -74,13 +74,13 @@ public class ContainerBlastFurnace extends Container {
             if (index == 3) {
                 if (!this.mergeItemStack(itemstack1, 4, 40, true)) return ItemStack.EMPTY;
                 slot.onSlotChange(itemstack1, itemstack);
-            } else if (index > 3) {
-                if (!this.mergeItemStack(itemstack1, 0, 3, false)) {
-                    if (index < 31) {
-                        if (!this.mergeItemStack(itemstack1, 31, 40, false)) return ItemStack.EMPTY;
-                    } else if (!this.mergeItemStack(itemstack1, 4, 31, false)) return ItemStack.EMPTY;
+            } else if (index != 0 && index != 1 && index != 4) {
+                if (!this.mergeItemStack(itemstack1, 0, 2, false) && !this.mergeItemStack(itemstack1, 4, 5, false)) {
+                    if (index >= 5 && index < 32) {
+                        if (!this.mergeItemStack(itemstack1, 32, 41, false)) return ItemStack.EMPTY;
+                    } else if (index >= 32 && index < 41 && !this.mergeItemStack(itemstack1, 5, 32, false)) return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 4, 40, false)) return ItemStack.EMPTY;
+            } else if (!this.mergeItemStack(itemstack1, 5, 41, false)) return ItemStack.EMPTY;
             if (itemstack1.isEmpty()) slot.putStack(ItemStack.EMPTY);
             else slot.onSlotChanged();
             if (itemstack1.getCount() == itemstack.getCount()) return ItemStack.EMPTY;

@@ -21,15 +21,9 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-        if (ID == 1 && te instanceof TileEntityBlastFurnace) {
-            return new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
-        }
-        if (ID == 2 && te instanceof TileEntityEnergyStorage) {
-            return new ContainerEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
-        }
-        if (ID == 3 && te instanceof TileEntityTransformer) {
-            return new ContainerTransformer(player.inventory, (TileEntityTransformer) te);
-        }
+        if (ID == 1 && te instanceof TileEntityBlastFurnace) return new ContainerBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
+        if (ID == 2 && te instanceof TileEntityEnergyStorage) return new ContainerEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
+        if (ID == 3 && te instanceof TileEntityTransformer) return new ContainerTransformer(player.inventory, (TileEntityTransformer) te);
         return null;
     }
 
@@ -37,15 +31,9 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
-        if (ID == 1 && te instanceof TileEntityBlastFurnace) {
-            return new GuiBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
-        }
-        if (ID == 2 && te instanceof TileEntityEnergyStorage) {
-            return new GuiEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
-        }
-        if (ID == 3 && te instanceof TileEntityTransformer) {
-            return new GuiTransformer(player.inventory, (TileEntityTransformer) te);
-        }
+        if (ID == 1 && te instanceof TileEntityBlastFurnace) return new GuiBlastFurnace(player.inventory, (TileEntityBlastFurnace) te);
+        if (ID == 2 && te instanceof TileEntityEnergyStorage) return new GuiEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
+        if (ID == 3 && te instanceof TileEntityTransformer) return new GuiTransformer(player.inventory, (TileEntityTransformer) te);
         return null;
     }
 }

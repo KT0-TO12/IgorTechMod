@@ -12,6 +12,7 @@ public class ModRecipes {
         GameRegistry.addSmelting(ModBlocks.BAKHMUTIUM_ORE, new ItemStack(EcompItems.SILICON_PURE), 0.7F);
         GameRegistry.addSmelting(ModBlocks.TITANIUM_ORE, new ItemStack(EcompItems.TITANIUM_INGOT), 0.7f);
         GameRegistry.addSmelting(ModBlocks.URANIUM_ORE, new ItemStack(EcompItems.URANIUM_INGOT), 1.0f);
+        GameRegistry.addSmelting(ModBlocks.ALUMINIUM_ORE, new ItemStack(EcompItems.ALUMINIUM_INGOT), 1.5f);
 
         System.out.println("ZOV Mod: Рецепты успешно добавлены!");
     }

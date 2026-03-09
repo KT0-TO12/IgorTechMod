@@ -2,7 +2,7 @@ package com.example.examplemod.main;
 
 import com.example.examplemod.machines.BlastFurnace.BlockBlastFurnace;
 import com.example.examplemod.machines.EnergyStorage.BlockEnergyStorage;
-import com.example.examplemod.machines.EnergyStorage.TileEntityStatue;
+import com.example.examplemod.machines.statue.TileEntityStatue;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,12 +10,14 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -23,8 +25,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,17 +57,20 @@ public class ModBlocks {
             .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
 
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
-
+    public static final Block ALUMINIUM_ORE = new Block(Material.ROCK)
+            .setRegistryName("aluminium_ore").setUnlocalizedName("aluminium_ore")
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
-        r.registerAll(ENERGY_STORAGE, CABLE_EBLOCK, TRANSFORMATOR_EBLOCK, BLAST_FURNACE, BAKHMUTIUM_ORE, URANIUM_ORE, TITANIUM_ORE, STATUE_BLOCK);
+        r.registerAll(ENERGY_STORAGE, CABLE_EBLOCK, TRANSFORMATOR_EBLOCK, BLAST_FURNACE, BAKHMUTIUM_ORE, URANIUM_ORE, TITANIUM_ORE, STATUE_BLOCK,ALUMINIUM_ORE);
     }
 
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> r = event.getRegistry();
 
+        r.register(new ItemBlock(ALUMINIUM_ORE).setRegistryName(ALUMINIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(ENERGY_STORAGE).setRegistryName(ENERGY_STORAGE.getRegistryName()));
         r.register(new ItemBlock(BLAST_FURNACE).setRegistryName(BLAST_FURNACE.getRegistryName()));
         r.register(new ItemBlock(BAKHMUTIUM_ORE).setRegistryName(BAKHMUTIUM_ORE.getRegistryName()));
@@ -73,6 +78,7 @@ public class ModBlocks {
         r.register(new ItemBlock(TITANIUM_ORE).setRegistryName(TITANIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(CABLE_EBLOCK).setRegistryName(CABLE_EBLOCK.getRegistryName()));
         r.register(new ItemBlock(TRANSFORMATOR_EBLOCK).setRegistryName(TRANSFORMATOR_EBLOCK.getRegistryName()));
+
         ItemBlock itemStatue = new ItemBlock(STATUE_BLOCK) {
             @Override
             @SideOnly(Side.CLIENT)
@@ -82,7 +88,7 @@ public class ModBlocks {
                     tooltip.add(I18n.format("statue.tooltip.desc"));
                     tooltip.add(TextFormatting.DARK_AQUA + "Style: NTM / HBM");
                 } else {
-                    tooltip.add(I18n.format("statue.tooltip.hold_shift"));
+                    tooltip.add(TextFormatting.YELLOW + I18n.format("statue.tooltip.hold_shift"));
                 }
             }
         };
@@ -92,7 +98,6 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-
         registerBlockModel(ENERGY_STORAGE);
         registerBlockModel(BLAST_FURNACE);
         registerBlockModel(BAKHMUTIUM_ORE);
@@ -117,6 +122,14 @@ public class ModBlocks {
             setRegistryName(name);
             setUnlocalizedName(name);
             setCreativeTab(ExampleMod.MOD_TAB);
+        }
+
+        @Override
+        public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+            if (!worldIn.isRemote) {
+                playerIn.openGui(ExampleMod.instance, 4, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            }
+            return true;
         }
 
         @Override public boolean isOpaqueCube(IBlockState s) { return false; }

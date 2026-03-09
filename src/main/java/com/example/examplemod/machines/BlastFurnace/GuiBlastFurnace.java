@@ -16,9 +16,9 @@ public class GuiBlastFurnace extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRenderer.drawString("Input 1", 38, 7, 0xBABABA);
-        this.fontRenderer.drawString("Fuel", 43, 43, 0xBABABA);
-        this.fontRenderer.drawString("Input 2", 70, 24, 0xBABABA);
+        this.fontRenderer.drawString(" Input 1", 38, 7, 0xBABABA);
+        this.fontRenderer.drawString("Input 2", 43, 43, 0xBABABA);
+        this.fontRenderer.drawString("fuel", 70, 24, 0xBABABA);
         this.fontRenderer.drawString("Output", 120, 24, 0xBABABA);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
 

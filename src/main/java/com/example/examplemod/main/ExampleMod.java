@@ -10,7 +10,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraft.util.EnumFacing;
 import com.example.examplemod.IFE.IEStorage;
 import com.example.examplemod.IFE.IIEStorage;
-import com.example.examplemod.machines.EnergyStorage.TileEntityStatue;
+import com.example.examplemod.machines.statue.TileEntityStatue;
 import com.example.examplemod.discord.DiscordManager;
 import com.example.examplemod.machines.EnergyStorage.TileEntityEnergyStorage;
 import com.example.examplemod.machines.handler.GuiHandler;
@@ -30,11 +30,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.util.text.TextFormatting;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelPlayer;
@@ -53,7 +48,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import static com.example.examplemod.main.EcompItems.*;
 
 @Mod(modid = ExampleMod.examplemod, name = ExampleMod.NAME, version = ExampleMod.VERSION)
 public class ExampleMod {
@@ -67,7 +61,6 @@ public class ExampleMod {
     public static final String examplemod = "examplemod";
     public static final String NAME = "Example Mod";
     public static final String VERSION = "1.1";
-
     @Mod.Instance(examplemod)
     public static ExampleMod instance;
 
@@ -114,6 +107,7 @@ public class ExampleMod {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         ModRecipes.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotSteel", EcompItems.STEEL_INGOT);
         net.minecraftforge.oredict.OreDictionary.registerOre("ingotTitanium", EcompItems.TITANIUM_INGOT);

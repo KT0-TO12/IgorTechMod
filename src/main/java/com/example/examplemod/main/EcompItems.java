@@ -46,6 +46,7 @@ public class EcompItems {
 
     // МЕТАЛЛЫ И СТАТУЯ
     public static final Item STEEL_INGOT = reg("steel_ingot");
+    public static final Item ALUMINIUM_INGOT = reg("aluminium_ingot");
     public static final Item TITANIUM_INGOT = reg("new_titanium_ingot");
     public static final Item BAKHMUTIUM_INGOT = reg("bakhmutium_ingot");
     public static final Item URANIUM_INGOT = reg("uranium_ingot");
