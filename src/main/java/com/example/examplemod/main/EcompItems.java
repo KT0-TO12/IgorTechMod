@@ -25,18 +25,16 @@ public class EcompItems {
     public static final Item MICROCHIP_BASE_ECOMP = reg("microchipbase");
     public static final Item ADVANCED_MICROCHIP_BASE_ECOMP = reg("advancedmicrochipbase");
     public static final Item SMD_BASE_ECOMP = reg("smdbase");
-
     // ОРУЖИЕ
     public static final Item SVAGAMET = reg("svagamet");
-
     // ОСНОВА
     public static final Item SILICON_PURE = reg("silicon_pure");
     public static final Item CAPACITOR_ECOMP = reg("capacitor");
     public static final Item RESISTOR_ECOMP = reg("resistor");
     public static final Item VACUM_TUBE_ECOMP = reg("vacum_tube");
     public static final Item INFINITE_BATTERY = reg("infinite_battery");
-
     // СНАРЯЖЕНИЕ
+    public static final Item MEGAKNIGHT_ARMOR = reg("megaknight_armor");
     public static final Item DOG_ARMOR = reg("new_dog_armor");
     public static final Item DOG_HELMET = reg("new_dog_helmet");
     public static final Item DOG_CHESTPLATE = reg("new_dog_chestplate");
@@ -59,7 +57,6 @@ public class EcompItems {
     public static final Item TEXTOLITE_PLATE_ECOMP = reg("textolite_plate_ecomp");
 
     private static Item reg(String name) {
-        // Убедись, что ExampleMod.examplemod возвращает "examplemod" (маленькими буквами!)
         Item item = new Item()
                 .setRegistryName(ExampleMod.examplemod, name)
                 .setUnlocalizedName(ExampleMod.examplemod + "." + name)
@@ -80,7 +77,6 @@ public class EcompItems {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         for (Item item : ITEMS) {
-            // Регистрация модели: ищет файл в assets/modid/models/item/name.json
             ModelLoader.setCustomModelResourceLocation(item, 0,
                     new ModelResourceLocation(item.getRegistryName(), "inventory"));
         }

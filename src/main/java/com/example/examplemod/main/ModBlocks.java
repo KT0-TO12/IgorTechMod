@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,7 +57,7 @@ public class ModBlocks {
 
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
     public static final Block ALUMINIUM_ORE = new Block(Material.ROCK)
-            .setRegistryName("aluminium_ore").setUnlocalizedName("aluminium_ore")
+            .setRegistryName("aluminium_ore").setUnlocalizedName("aluminium_ore") 
             .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {

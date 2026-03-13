@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBlastFurnace extends TileEntity implements ITickable, IInventory {
     private NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
-    private final IEStorage energyStorage = new IEStorage(100);
+    private final IEStorage energyStorage = new IEStorage(100000);
     public int cookTime;
     public int totalCookTime = 200;
     private int batteryTimer = 0;
@@ -39,75 +39,115 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
         if (!fuelStack.isEmpty() && fuelStack.getItem() == EcompItems.INFINITE_BATTERY) {
             if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()) {
                 batteryTimer++;
-                if (batteryTimer >= 20) {
+                if (batteryTimer >= 1) {
                     energyStorage.receiveEnergy(10, false);
                     batteryTimer = 0;
+                    this.markDirty();
                 }
             }
         } else if (!fuelStack.isEmpty()) {
-            if (fuelStack.getItem() == Items.COAL && energyStorage.getEnergyStored() <= 98) {
-                energyStorage.receiveEnergy(2, false);
-                fuelStack.shrink(1);
-                this.markDirty();
-            } else if (fuelStack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && energyStorage.getEnergyStored() <= 80) {
-                energyStorage.receiveEnergy(20, false);
+            if (fuelStack.getItem() == Items.COAL && energyStorage.getEnergyStored() <= energyStorage.getMaxEnergyStored() - 100) {
+                energyStorage.receiveEnergy(100, false);
                 fuelStack.shrink(1);
                 this.markDirty();
             }
         }
 
-        if (energyStorage.getEnergyStored() >= 1 && canSmelt()) {
-            cookTime++;
-            if (cookTime >= totalCookTime) {
-                smeltItem();
-                energyStorage.extractEnergy(1, false);
-                cookTime = 0;
+        // --- ЛОГИКА ПЛАВКИ ---
+        ItemStack input1 = inventory.get(0);
+        ItemStack input2 = inventory.get(1);
+
+        BlastRecipes.BlastRecipe recipe = BlastRecipes.instance().getRecipe(input1, input2);
+
+        if (recipe != null && canSmelt(recipe)) {
+            if (energyStorage.getEnergyStored() >= recipe.energyPerTick) {
+                energyStorage.extractEnergy(recipe.energyPerTick, false);
+                cookTime++;
+
+                if (cookTime >= totalCookTime) {
+                    smeltItem(recipe);
+                    cookTime = 0;
+                }
                 this.markDirty();
             }
         } else {
-            cookTime = 0;
+            if (cookTime > 0) {
+                cookTime = 0;
+                this.markDirty();
+            }
         }
     }
 
-    private boolean canSmelt() {
-        ItemStack input = inventory.get(0);
-        ItemStack coalReagent = inventory.get(1);
-        ItemStack output = inventory.get(3);
+    private boolean canSmelt(BlastRecipes.BlastRecipe recipe) {
+        if (recipe == null) return false;
 
-        if (input.isEmpty() || coalReagent.isEmpty() || coalReagent.getItem() != Items.COAL) return false;
+        ItemStack result = recipe.output;
+        ItemStack outputSlot = inventory.get(3);
 
-        ItemStack result = getResult(input);
-        if (result.isEmpty()) return false;
+        if (outputSlot.isEmpty()) return true;
+        if (!outputSlot.isItemEqual(result)) return false;
 
-        if (output.isEmpty()) return true;
-        if (!output.isItemEqual(result)) return false;
-        return (output.getCount() + result.getCount() <= getInventoryStackLimit());
+        int count = outputSlot.getCount() + result.getCount();
+        return count <= getInventoryStackLimit() && count <= outputSlot.getMaxStackSize();
     }
 
-    private void smeltItem() {
-        ItemStack input = inventory.get(0);
-        ItemStack coalReagent = inventory.get(1);
-        ItemStack result = getResult(input);
+    private void smeltItem(BlastRecipes.BlastRecipe recipe) {
+        ItemStack result = recipe.output.copy();
+        ItemStack outputSlot = inventory.get(3);
 
-        if (!result.isEmpty()) {
-            input.shrink(1);
-            coalReagent.shrink(1);
-            if (inventory.get(3).isEmpty()) inventory.set(3, result.copy());
-            else inventory.get(3).grow(result.getCount());
+        if (outputSlot.isEmpty()) {
+            inventory.set(3, result);
+        } else {
+            outputSlot.grow(result.getCount());
+        }
+
+        inventory.get(0).shrink(1);
+        if (!recipe.input2.isEmpty()) {
+            inventory.get(1).shrink(1);
         }
     }
 
-    private ItemStack getResult(ItemStack input) {
-        if (input.getItem() == Items.IRON_INGOT) return new ItemStack(EcompItems.STEEL_INGOT);
-        if (Block.getBlockFromItem(input.getItem()) == ModBlocks.BAKHMUTIUM_ORE) return new ItemStack(EcompItems.SILICON_PURE);
-        return ItemStack.EMPTY;
+    @Override
+    public int getField(int id) {
+        switch (id) {
+            case 0: return cookTime;
+            case 1: return totalCookTime;
+            case 2: return energyStorage.getEnergyStored();
+            case 3: return energyStorage.getMaxEnergyStored();
+            default: return 0;
+        }
     }
 
-    @Override public void readFromNBT(NBTTagCompound compound) { super.readFromNBT(compound); this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY); ItemStackHelper.loadAllItems(compound, this.inventory); this.cookTime = compound.getInteger("CookTime"); this.energyStorage.readFromNBT(compound); }
-    @Override public NBTTagCompound writeToNBT(NBTTagCompound compound) { super.writeToNBT(compound); compound.setInteger("CookTime", this.cookTime); this.energyStorage.writeToNBT(compound); ItemStackHelper.saveAllItems(compound, this.inventory); return compound; }
-    @Override public int getField(int id) { if (id == 0) return cookTime; if (id == 1) return totalCookTime; if (id == 2) return energyStorage.getEnergyStored(); return 0; }
-    @Override public void setField(int id, int value) { if (id == 0) this.cookTime = value; else if (id == 1) this.totalCookTime = value; else if (id == 2) this.energyStorage.setEnergy(value); }
-    @Override public int getFieldCount() { return 3; }
+    @Override
+    public void setField(int id, int value) {
+        switch (id) {
+            case 0: this.cookTime = value; break;
+            case 1: this.totalCookTime = value; break;
+            case 2: this.energyStorage.setEnergy(value); break;
+        }
+    }
+
+    @Override
+    public int getFieldCount() { return 4; }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(compound, this.inventory);
+        this.cookTime = compound.getInteger("CookTime");
+        this.energyStorage.readFromNBT(compound);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("CookTime", this.cookTime);
+        this.energyStorage.writeToNBT(compound);
+        ItemStackHelper.saveAllItems(compound, this.inventory);
+        return compound;
+    }
+
     @Override public int getSizeInventory() { return 5; }
     @Override public boolean isEmpty() { for(ItemStack s : inventory) if(!s.isEmpty()) return false; return true; }
     @Override public ItemStack getStackInSlot(int i) { return inventory.get(i); }
@@ -125,4 +165,15 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
     @Override public boolean isItemValidForSlot(int i, ItemStack stack) { return i != 3; }
     @Override public SPacketUpdateTileEntity getUpdatePacket() { return new SPacketUpdateTileEntity(pos, 1, getUpdateTag()); }
     @Override public NBTTagCompound getUpdateTag() { return writeToNBT(new NBTTagCompound()); }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == ExampleMod.IE_ENERGY || super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == ExampleMod.IE_ENERGY) return (T) energyStorage;
+        return super.getCapability(capability, facing);
+    }
 }
