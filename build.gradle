@@ -8,6 +8,7 @@ buildscript {
         maven { url = "https://repo.cleanroommc.com" }
     }
     dependencies {
+
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }

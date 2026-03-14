@@ -28,6 +28,11 @@ public class EcompItems {
     // ОРУЖИЕ
     public static final Item SVAGAMET = reg("svagamet");
     // ОСНОВА
+    public static final Item SMD_TRANZISTOR = reg("smd_tranzistor");
+    public static final Item SMD_RESISTOR = reg ("smd_resistor");
+    public static final Item SMD_CAPACITOR = reg("smd_capasitor");
+    public static final Item CHIP = reg("chip");
+    public static final Item MICROCHIP = reg("microchip");
     public static final Item SILICON_PURE = reg("silicon_pure");
     public static final Item CAPACITOR_ECOMP = reg("capacitor");
     public static final Item RESISTOR_ECOMP = reg("resistor");
