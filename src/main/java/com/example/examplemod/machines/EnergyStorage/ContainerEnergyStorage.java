@@ -66,9 +66,9 @@ public class ContainerEnergyStorage extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < 1) { // Если кликаем по слоту в хранилище
+            if (index < 1) {
                 if (!this.mergeItemStack(itemstack1, 1, 37, true)) return ItemStack.EMPTY;
-            } else { // Если кликаем по инвентарю игрока
+            } else {
                 if (!this.mergeItemStack(itemstack1, 0, 1, false)) return ItemStack.EMPTY;
             }
 

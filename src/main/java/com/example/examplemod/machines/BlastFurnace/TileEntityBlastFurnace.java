@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityBlastFurnace extends TileEntity implements ITickable, IInventory {
     private NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
-    private final IEStorage energyStorage = new IEStorage(100000);
+    private final IEStorage energyStorage = new IEStorage(100);
     public int cookTime;
     public int totalCookTime = 200;
     private int batteryTimer = 0;
@@ -52,8 +52,6 @@ public class TileEntityBlastFurnace extends TileEntity implements ITickable, IIn
                 this.markDirty();
             }
         }
-
-        // --- ЛОГИКА ПЛАВКИ ---
         ItemStack input1 = inventory.get(0);
         ItemStack input2 = inventory.get(1);
 

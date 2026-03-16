@@ -32,7 +32,6 @@ public class BlockEnergyStorage extends Block {
         return true;
     }
 
-    // Эти два метода заменяют BlockContainer и работают стабильнее
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
@@ -47,7 +46,6 @@ public class BlockEnergyStorage extends Block {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityEnergyStorage) {
-            // Выпадение предметов при поломке
             InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityEnergyStorage)te);
         }
         super.breakBlock(worldIn, pos, state);

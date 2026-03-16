@@ -28,10 +28,9 @@ public class BlockTransformer extends BlockHorizontal {
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityTransformer(); // Привязываем твой TileEntity
+        return new TileEntityTransformer();
     }
 
-    // Логика поворота блока при установке
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());

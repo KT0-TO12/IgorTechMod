@@ -18,16 +18,14 @@ import java.util.List;
 public class EcompItems {
 
     public static final List<Item> ITEMS = new ArrayList<>();
-
+    //ХИМИЯ
+    public static final Item SILICON_PURE_ALUMINIED = reg("silicon_plate_aluminium");
+    public static final Item QUARZ_SAND = reg("quarz_sand");
+    public static final Item FIBERGLASS = reg ("fiberglass");
+    public static final Item COPPERED_TEXTOLITE = reg("coppered_textolite");
     // ЭЛЕКТРОНИКА
-    public static final Item TRANZISTOR_BASE_ECOMP = reg("tranzistor");
-    public static final Item MICROCONTROLLER_BASE_ECOMP = reg("microcontrollerbase");
-    public static final Item MICROCHIP_BASE_ECOMP = reg("microchipbase");
-    public static final Item ADVANCED_MICROCHIP_BASE_ECOMP = reg("advancedmicrochipbase");
-    public static final Item SMD_BASE_ECOMP = reg("smdbase");
-    // ОРУЖИЕ
+    public static final Item TRANZISTOR = reg("tranzistor");
     public static final Item SVAGAMET = reg("svagamet");
-    // ОСНОВА
     public static final Item SMD_TRANZISTOR = reg("smd_tranzistor");
     public static final Item SMD_RESISTOR = reg ("smd_resistor");
     public static final Item SMD_CAPACITOR = reg("smd_capasitor");
@@ -57,7 +55,6 @@ public class EcompItems {
 
     // ПРОЧИЕ
     public static final Item SILICON_PLATE_ECOMP = reg("silicon_plate_ecomp");
-    public static final Item TRANZISTOR_ECOMP = reg("tranzistor_ecomp");
     public static final Item COPPER_PLATE_ECOMP = reg("copper_plate_ecomp");
     public static final Item TEXTOLITE_PLATE_ECOMP = reg("textolite_plate_ecomp");
 

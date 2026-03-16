@@ -1,5 +1,6 @@
 package com.example.examplemod.main;
 
+import com.example.examplemod.machines.vacuum_deposition_unit.TileEntityVacuumDepositionUnit;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import com.example.examplemod.EnergyBlocks.TileEntityCable;
@@ -76,6 +77,7 @@ public class ExampleMod {
         proxy.preInit(event);
         ModRecipes.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+        GameRegistry.registerTileEntity(TileEntityVacuumDepositionUnit.class, new ResourceLocation(examplemod, "vacuum_deposition_unit"));
         GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(examplemod, "tile_cable"));
         GameRegistry.registerTileEntity(TileEntityTransformer.class, new ResourceLocation(examplemod, "tile_transformer"));
         GameRegistry.registerTileEntity(TileEntityBlastFurnace.class, new ResourceLocation(examplemod, "blast_furnace"));

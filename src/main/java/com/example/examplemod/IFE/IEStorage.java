@@ -12,9 +12,9 @@ public class IEStorage implements IIEStorage {
 
     public IEStorage(int capacity) {
         this.capacity = capacity;
-        this.maxVoltage = maxVoltage;    //voltage2
+        this.maxVoltage = maxVoltage;
     }
-    //voltage3
+
     public int receiveEnergy(int amount, int voltage, boolean simulate) {
         if (voltage > this.maxVoltage) {
             return 0;
@@ -25,7 +25,7 @@ public class IEStorage implements IIEStorage {
     }
     @Override
     public int getMaxVoltage() { return maxVoltage; }
-//other
+
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int energyReceived = Math.min(capacity - energy, maxReceive);

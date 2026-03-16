@@ -1,20 +1,36 @@
-# Предметы
-item.new_dog_armor.name=собачья броня НКР
-item.new_dog_helmet.name=Шлем собачей брони НКР
-item.new_dog_chestplate.name=тельная часть собачей брони НКР
-item.new_dog_tail.name=хвостовая часть собачей НКР
-item.new_armor_plate.name=обшивка
-item.new_titanium_ingot.name=слиток титана
-item.new_gas_filter.name=фильтр
-item.infinite_battery.name=мини реактор
-ile.statue_block.name=статуэтка
-tile.uranium_ore.name=урановая руда
-item.uranium_ingot.name=слиток урана
+# Электроника
 item.titanium_ore.name=титановая руда
-tile.new_statue_block_2.name=НИЧЕГО
-tile.new_statue_block.name=НИЧЕГО2
-# компоненты
-item.tranzistor_ecomp.name=транзистор
+tile.uranium_ore.name=урановая руда
+tile.aluminium_ore.name=алюминиевая руда
+tile.bakhmutium_ore.name=бахмутиевая руда
+item.examplemod.svagamet.name=Свагамет
+item.examplemod.smd_tranzistor.name=SMD Транзистор
+item.examplemod.smd_resistor.name=SMD Резистор
+item.examplemod.smd_capasitor.name=SMD Конденсатор
+item.examplemod.chip.name=Чип
+item.examplemod.microchip.name=Микрочип
+item.examplemod.silicon_pure.name=Чистый кремний
+item.examplemod.capacitor.name=Конденсатор
+item.examplemod.resistor.name=Резистор
+item.examplemod.vacum_tube.name=Вакуумная трубка
+item.examplemod.infinite_battery.name=мини реактор
+item.examplemod.megaknight_armor.name=Броня Мегарыцаря
+item.examplemod.new_dog_armor.name=Броня собаки
+item.examplemod.new_dog_helmet.name=Шлем собаки
+item.examplemod.new_dog_chestplate.name=Нагрудник собаки
+item.examplemod.new_dog_tail.name=Хвост собаки
+item.examplemod.new_gas_filter.name=фильтр
+item.examplemod.new_armor_plate.name=Бронепластина
+item.examplemod.steel_ingot.name=Стальной слиток
+item.examplemod.aluminium_ingot.name=Алюминиевый слиток
+item.examplemod.new_titanium_ingot.name=Титановый слиток
+item.examplemod.bakhmutium_ingot.name=Бахмутиевый слиток
+item.examplemod.uranium_ingot.name=Урановый слиток
+item.examplemod.item_statue.name=Статуя
+item.examplemod.silicon_plate_ecomp.name=Кремниевая пластина
+item.examplemod.tranzistor.name=Транзистор
+item.examplemod.copper_plate_ecomp.name=Медная пластина
+item.examplemod.textolite_plate_ecomp.name=Текстолит
 # Статуэтка
 statue.tooltip.name=§6Персональная статуэтка
 statue.tooltip.hold_shift=§8[Зажмите §7LSHIFT§8 для инфо]

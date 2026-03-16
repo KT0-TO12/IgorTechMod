@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockCable extends Block {
-    // Размеры тонкого кабеля (от 0.0 до 1.0)
+    //от 0.0 до 1.0
     protected static final AxisAlignedBB CABLE_AABB = new AxisAlignedBB(0.375D, 0.375D, 0.375D, 0.625D, 0.625D, 0.625D);
 
     public BlockCable(String name) {

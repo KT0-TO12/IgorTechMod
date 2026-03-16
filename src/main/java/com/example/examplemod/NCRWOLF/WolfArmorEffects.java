@@ -132,7 +132,7 @@ public class WolfArmorEffects {
         if (wolf.getEntityData().getBoolean("has_dog_armor")) {
             event.setCanceled(true);
             wolf.getEntityData().setBoolean("has_dog_armor", false);
-            removeAttributes(wolf); // Сбрасываем статы
+            removeAttributes(wolf);
             wolf.setHealth(10.0F);
 
             wolf.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 200, 2, false, true));

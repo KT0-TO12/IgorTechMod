@@ -21,7 +21,6 @@ public class GuiBlastFurnace extends GuiContainer {
         this.fontRenderer.drawString("fuel", 70, 24, 0xBABABA);
         this.fontRenderer.drawString("Output", 120, 24, 0xBABABA);
         this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 94, 0x404040);
-
         int energy = this.tileEntity.getField(2);
         this.fontRenderer.drawString(energy + "%", 10, 10, 0xFFAA00);
     }
