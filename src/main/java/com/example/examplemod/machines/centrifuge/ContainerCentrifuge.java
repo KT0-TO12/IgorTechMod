@@ -1,4 +1,4 @@
-package com.example.examplemod.machines.vacuum_deposition_unit;
+package com.example.examplemod.machines.centrifuge;
 
 import com.example.examplemod.machines.vacuum_deposition_unit.TileEntityVacuumDepositionUnit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,16 +12,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContainerVacuumDepositionUnit extends Container {
-    private final TileEntityVacuumDepositionUnit te;
+public class ContainerCentrifuge extends Container {
+    private final TileEntityCentrifuge te;
     private int cookTime, energy;
 
-    public ContainerVacuumDepositionUnit(InventoryPlayer playerInv, TileEntityVacuumDepositionUnit te) {
+    public ContainerCentrifuge(InventoryPlayer playerInv, TileEntityCentrifuge te) {
         this.te = te;
-
-        this.addSlotToContainer(new Slot(te, 0, 35, 18));
-        this.addSlotToContainer(new Slot(te, 1, 65, 18));
-        this.addSlotToContainer(new Slot(te, 2, 125, 35));
+        this.addSlotToContainer(new Slot(te, 0, 35, 18));  // Кремний
+        this.addSlotToContainer(new Slot(te, 1, 65, 18));  // Фоторезистек
+        this.addSlotToContainer(new Slot(te, 2, 125, 35)); // Выход
         this.addSlotToContainer(new Slot(te, 3, 50, 55) {
             @Override
             public boolean isItemValid(ItemStack stack) {

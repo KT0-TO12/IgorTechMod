@@ -17,7 +17,7 @@ public class OreGen implements IWorldGenerator {
     public OreGen() {
         this.TITANIUM_ORE = new WorldGenMinable(ModBlocks.TITANIUM_ORE.getDefaultState(), 8);
         this.URANIUM_ORE = new WorldGenMinable(ModBlocks.URANIUM_ORE.getDefaultState(), 4);
-        this.BAKHMUTIUM_ORE = new WorldGenMinable(ModBlocks.URANIUM_ORE.getDefaultState(), 4);
+        this.BAKHMUTIUM_ORE = new WorldGenMinable(ModBlocks.BAKHMUTIUM_ORE.getDefaultState(), 4);
     }
 
     @Override

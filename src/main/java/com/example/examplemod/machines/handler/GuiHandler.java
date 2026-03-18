@@ -9,6 +9,12 @@ import com.example.examplemod.machines.BlastFurnace.TileEntityBlastFurnace;
 import com.example.examplemod.machines.EnergyStorage.ContainerEnergyStorage;
 import com.example.examplemod.machines.EnergyStorage.GuiEnergyStorage;
 import com.example.examplemod.machines.EnergyStorage.TileEntityEnergyStorage;
+import com.example.examplemod.machines.centrifuge.ContainerCentrifuge;
+import com.example.examplemod.machines.centrifuge.GuiCentrifuge;
+import com.example.examplemod.machines.centrifuge.TileEntityCentrifuge;
+import com.example.examplemod.machines.heating_table.ContainerHeatingTable;
+import com.example.examplemod.machines.heating_table.GuiHeating_Table;
+import com.example.examplemod.machines.heating_table.TileEntityHeatingTable;
 import com.example.examplemod.machines.vacuum_deposition_unit.ContainerVacuumDepositionUnit;
 import com.example.examplemod.machines.vacuum_deposition_unit.TileEntityVacuumDepositionUnit;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +33,8 @@ public class GuiHandler implements IGuiHandler {
         if (ID == 2 && te instanceof TileEntityEnergyStorage) return new ContainerEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
         if (ID == 3 && te instanceof TileEntityTransformer) return new ContainerTransformer(player.inventory, (TileEntityTransformer) te);
         if (ID == 4 && te instanceof TileEntityVacuumDepositionUnit) return new ContainerVacuumDepositionUnit(player.inventory, (TileEntityVacuumDepositionUnit) te);
+        if (ID == 5 && te instanceof TileEntityCentrifuge) return new ContainerCentrifuge(player.inventory, (TileEntityCentrifuge)te);
+        if (ID == 6 && te instanceof TileEntityHeatingTable) return new ContainerHeatingTable(player.inventory, (TileEntityHeatingTable)te);
         return null;
     }
 
@@ -37,6 +45,8 @@ public class GuiHandler implements IGuiHandler {
         if (ID == 2 && te instanceof TileEntityEnergyStorage) return new GuiEnergyStorage(player.inventory, (TileEntityEnergyStorage) te);
         if (ID == 3 && te instanceof TileEntityTransformer) return new GuiTransformer(player.inventory, (TileEntityTransformer) te);
         if (ID==4 && te instanceof TileEntityVacuumDepositionUnit) return new GuiVacuum_Deposition_Unit(player.inventory,(TileEntityVacuumDepositionUnit)te);
+        if (ID==5 && te instanceof TileEntityCentrifuge)return new GuiCentrifuge(player.inventory,(TileEntityCentrifuge)te);
+        if (ID==6 && te instanceof TileEntityHeatingTable)return new GuiHeating_Table(player.inventory,(TileEntityHeatingTable)te);
         return null;
     }
 }

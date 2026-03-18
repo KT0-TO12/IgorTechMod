@@ -65,6 +65,36 @@ public class ExampleMod {
     @Mod.Instance(examplemod)
     public static ExampleMod instance;
 
+    public static final CreativeTabs MOD_RESOURCES_TAB = new CreativeTabs("tab_res") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(EcompItems.DOG_ARMOR);
+        }
+    };
+    public static final CreativeTabs MOD_CHEMETRY_TAB = new CreativeTabs("tab_chem") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(EcompItems.DOG_ARMOR);
+        }
+    };
+    public static final CreativeTabs MOD_ORES_TAB = new CreativeTabs("tab_ores") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(EcompItems.DOG_ARMOR);
+        }
+    };
+    public static final CreativeTabs MOD_MECHS_TAB = new CreativeTabs("tab_mechs") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(EcompItems.DOG_ARMOR);
+        }
+    };
+    public static final CreativeTabs MOD_ELECTRONIC_TAB = new CreativeTabs("tab_electronic") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(EcompItems.DOG_ARMOR);
+        }
+    };
     public static final CreativeTabs MOD_TAB = new CreativeTabs("tab_pespatron") {
         @Override
         public ItemStack getTabIconItem() {

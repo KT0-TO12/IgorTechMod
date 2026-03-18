@@ -1,21 +1,20 @@
-package com.example.examplemod.machines.vacuum_deposition_unit;
+package com.example.examplemod.machines.heating_table;
 
-import com.example.examplemod.main.EcompItems;
-import com.example.examplemod.main.ExampleMod;
 import com.example.examplemod.IFE.IEStorage;
+import com.example.examplemod.main.EcompItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-public class TileEntityVacuumDepositionUnit extends TileEntity implements ITickable, IInventory {
+public class TileEntityHeatingTable extends TileEntity implements ITickable, IInventory {
     private NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     private final IEStorage energy = new IEStorage(50000);
     public int cookTime;
@@ -33,8 +32,8 @@ public class TileEntityVacuumDepositionUnit extends TileEntity implements ITicka
                 this.markDirty();
             }
         }
-        ItemStack silicon = inventory.get(0);
-        ItemStack alum = inventory.get(1);
+        ItemStack silicon_plate_photoresisted = inventory.get(0);
+        ItemStack bottled_photoresist = inventory.get(1);
 
         if (canProcess()) {
             if (energy.getEnergyStored() >= 40) {
@@ -56,16 +55,16 @@ public class TileEntityVacuumDepositionUnit extends TileEntity implements ITicka
     }
 
     private boolean canProcess() {
-        ItemStack inputSilicon = this.inventory.get(0);
-        ItemStack inputAlum = this.inventory.get(1);
+        ItemStack inputsilicon_plate_photoresisted = this.inventory.get(0);
+        ItemStack inputheatingelectrode = this.inventory.get(1);
 
-        if (inputSilicon.isEmpty() || inputSilicon.getItem() != EcompItems.SILICON_PURE_PHOTORESISTED) return false;
-        if (inputAlum.isEmpty() || inputAlum.getItem() != EcompItems.ALUMINIUM_INGOT) return false;
+        if (inputsilicon_plate_photoresisted.isEmpty() || inputsilicon_plate_photoresisted.getItem() != EcompItems.SILICON_PURE_PHOTORESISTED) return false;
+        if (inputheatingelectrode .isEmpty() ||inputheatingelectrode .getItem() != EcompItems.HEATING_ELECTRODE) return false;
 
         ItemStack outputStack = this.inventory.get(2);
         if (outputStack.isEmpty()) return true;
 
-        if (outputStack.getItem() != EcompItems.SILICON_PURE_ALUMINIED) return false;
+        if (outputStack.getItem() != EcompItems.SILICON_WITH_HARDENED_PHOTORESIST) return false;
 
         int resultCount = outputStack.getCount() + 1;
         return resultCount <= getInventoryStackLimit() && resultCount <= outputStack.getMaxStackSize();
@@ -76,7 +75,7 @@ public class TileEntityVacuumDepositionUnit extends TileEntity implements ITicka
             ItemStack inputSilicon = this.inventory.get(0);
             ItemStack inputAlum = this.inventory.get(1);
             ItemStack resultStack = this.inventory.get(2);
-            ItemStack recipeOutput = new ItemStack(EcompItems.SILICON_PURE_ALUMINIED);
+            ItemStack recipeOutput = new ItemStack(EcompItems.SILICON_WITH_HARDENED_PHOTORESIST);
 
             inputSilicon.shrink(1);
             inputAlum.shrink(1);
@@ -121,9 +120,9 @@ public class TileEntityVacuumDepositionUnit extends TileEntity implements ITicka
         return true;
     }
     @Override public void clear() { inventory.clear(); }
-    @Override public String getName() { return "container.vacuum_deposition_unit"; }
+    @Override public String getName() { return "container.heating_table"; }
     @Override public boolean hasCustomName() { return false; }
-    @Override public ITextComponent getDisplayName() { return new TextComponentString("Vacuum Deposition Unit"); }
+    @Override public ITextComponent getDisplayName() { return new TextComponentString("Heating table"); }
     @Override public void readFromNBT(NBTTagCompound c) { super.readFromNBT(c); ItemStackHelper.loadAllItems(c, inventory); energy.readFromNBT(c); cookTime = c.getInteger("CookTime"); }
     @Override public NBTTagCompound writeToNBT(NBTTagCompound c) { super.writeToNBT(c); ItemStackHelper.saveAllItems(c, inventory); energy.writeToNBT(c); c.setInteger("CookTime", cookTime); return c; }
 }

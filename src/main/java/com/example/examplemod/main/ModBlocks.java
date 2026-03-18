@@ -2,6 +2,7 @@ package com.example.examplemod.main;
 
 import com.example.examplemod.machines.BlastFurnace.BlockBlastFurnace;
 import com.example.examplemod.machines.EnergyStorage.BlockEnergyStorage;
+import com.example.examplemod.machines.centrifuge.BlockCentrifuge;
 import com.example.examplemod.machines.statue.TileEntityStatue;
 import com.example.examplemod.machines.vacuum_deposition_unit.BlockVacuum_Deposition_Unit;
 import net.minecraft.block.Block;
@@ -38,38 +39,42 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ExampleMod.examplemod)
 public class ModBlocks {
-    public static final Block VACUUM_DEPOSITION_UNIT = new BlockVacuum_Deposition_Unit("vacuum_deposition_unit");
-    public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage").setCreativeTab(ExampleMod.MOD_TAB);
-    public static final Block BLAST_FURNACE = new BlockBlastFurnace().setCreativeTab(ExampleMod.MOD_TAB);
+    public static final Block HEATING_TABLE = new BlockCentrifuge("heating_table").setCreativeTab(ExampleMod.MOD_MECHS_TAB);
+    public static final Block CENTRIFUGE = new BlockCentrifuge("centrifuge").setCreativeTab(ExampleMod.MOD_MECHS_TAB);
+    public static final Block VACUUM_DEPOSITION_UNIT = new BlockVacuum_Deposition_Unit("vacuum_deposition_unit").setCreativeTab(ExampleMod.MOD_MECHS_TAB);
+    public static final Block ENERGY_STORAGE = new BlockEnergyStorage("energy_storage").setCreativeTab(ExampleMod.MOD_MECHS_TAB);
+    public static final Block BLAST_FURNACE = new BlockBlastFurnace().setCreativeTab(ExampleMod.MOD_MECHS_TAB);
     public static final Block CABLE_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockCable("cable_eblock").setCreativeTab(ExampleMod.MOD_TAB);
-    public static final Block TRANSFORMATOR_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockTransformer("transformer_eblock").setCreativeTab(ExampleMod.MOD_TAB);
+    public static final Block TRANSFORMATOR_EBLOCK = new com.example.examplemod.EnergyBlocks.BlockTransformer("transformer_eblock").setCreativeTab(ExampleMod.MOD_MECHS_TAB);
 
     public static final Block BAKHMUTIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("bakhmutium_ore").setUnlocalizedName("bakhmutium_ore")
-            .setHardness(3.0F).setResistance(5.0F).setCreativeTab(ExampleMod.MOD_TAB);
+            .setHardness(3.0F).setResistance(5.0F).setCreativeTab(ExampleMod.MOD_ORES_TAB);
 
     public static final Block URANIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("uranium_ore").setUnlocalizedName("uranium_ore")
-            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_ORES_TAB);
 
     public static final Block TITANIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("titanium_ore").setUnlocalizedName("titanium_ore")
-            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_ORES_TAB);
 
     public static final Block STATUE_BLOCK = new BlockStatueCustom("statue_block");
     public static final Block ALUMINIUM_ORE = new Block(Material.ROCK)
             .setRegistryName("aluminium_ore").setUnlocalizedName("aluminium_ore") 
-            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_TAB);
+            .setHardness(3.0F).setResistance(10.0f).setCreativeTab(ExampleMod.MOD_ORES_TAB);
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> r = event.getRegistry();
-        r.registerAll(ENERGY_STORAGE, CABLE_EBLOCK, TRANSFORMATOR_EBLOCK, BLAST_FURNACE,VACUUM_DEPOSITION_UNIT,BAKHMUTIUM_ORE, URANIUM_ORE, TITANIUM_ORE, STATUE_BLOCK,ALUMINIUM_ORE);
+        r.registerAll(ENERGY_STORAGE, CABLE_EBLOCK, TRANSFORMATOR_EBLOCK, BLAST_FURNACE,VACUUM_DEPOSITION_UNIT,BAKHMUTIUM_ORE, URANIUM_ORE, TITANIUM_ORE, STATUE_BLOCK,ALUMINIUM_ORE,CENTRIFUGE,HEATING_TABLE);
     }
 
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> r = event.getRegistry();
+        r.register(new ItemBlock(HEATING_TABLE).setRegistryName(HEATING_TABLE.getRegistryName()));
+        r.register(new ItemBlock(CENTRIFUGE ).setRegistryName(CENTRIFUGE.getRegistryName()));
         r.register(new ItemBlock(VACUUM_DEPOSITION_UNIT).setRegistryName(VACUUM_DEPOSITION_UNIT.getRegistryName()));
         r.register(new ItemBlock(ALUMINIUM_ORE).setRegistryName(ALUMINIUM_ORE.getRegistryName()));
         r.register(new ItemBlock(ENERGY_STORAGE).setRegistryName(ENERGY_STORAGE.getRegistryName()));
@@ -99,6 +104,8 @@ public class ModBlocks {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
+        registerBlockModel(HEATING_TABLE);
+        registerBlockModel(CENTRIFUGE);
         registerBlockModel(ENERGY_STORAGE);
         registerBlockModel(BLAST_FURNACE);
         registerBlockModel(BAKHMUTIUM_ORE);
